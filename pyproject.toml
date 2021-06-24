@@ -11,6 +11,7 @@ uvicorn = "^0.14.0"
 pendulum = "^2.1.2"
 datefinder = "^0.7.1"
 workalendar = "^15.3.0"
+orjson = "^3.5.3"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.6b0", allow-prereleases = true}
