@@ -8,6 +8,9 @@ authors = ["Mr.Nobody <mrcartoonster@yahoo.com>"]
 python = "^3.9"
 fastapi = "^0.65.2"
 uvicorn = "^0.14.0"
+pendulum = "^2.1.2"
+datefinder = "^0.7.1"
+workalendar = "^15.3.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.6b0", allow-prereleases = true}
@@ -17,6 +20,20 @@ pytest-clarity = "^1.0.1"
 rich = "^10.4.0"
 ipython = "^7.24.1"
 pre-commit = "^2.13.0"
+pytest-pythonpath = "^0.7.3"
+pytest-emoji = "^0.2.0"
+pytest-instafail = "^0.4.2"
+pytest-cov = "^2.12.1"
+interrogate = "^1.4.0"
+
+[tool.pytest.ini_options]
+addopts = "-rssxX -l --tb=short --strict --emoji -vvv -p no:warnings"
+xfail_strict = "True"
+markers = [
+  "smoke",
+  "fire",
+  "verify"
+]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
