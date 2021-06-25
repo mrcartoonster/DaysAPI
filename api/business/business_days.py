@@ -26,7 +26,9 @@ proper_dates = (
 async def business_day(
     date: str = Query(
         default=p.now().to_date_string(),
-        description="Date to count from.",
+        description=(
+            "Date to count from. Format date as YYYY-MM-DD or MM-DD-YYYY"
+        ),
     ),
     days: Optional[int] = Query(
         8,
@@ -40,7 +42,7 @@ async def business_day(
     if s.search(date) is None:
         raise HTTPException(
             status_code=400,
-            # Might use datefinder here for date correct for examples given.
+            # Might use datefinder here for date correction for examples given.
             detail=(
                 f"Date format entered:{date} is incorrect."
                 " Date format must be entered as YYYY-MM-DD e.g. 2021-01-01 "
