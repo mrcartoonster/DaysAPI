@@ -10,7 +10,7 @@ from services.business.add_working import working_days
 
 router = APIRouter(
     prefix="/business",
-    tags=["business"],
+    tags=["Business"],
     default_response_class=ORJSONResponse,
 )
 
