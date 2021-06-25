@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
+import re
 from typing import Optional
 
 import pendulum as p
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
-from pydantic import BaseModel, Field
 
 from services.business.add_working import working_days
 
@@ -22,22 +22,30 @@ proper_dates = (
 )
 
 
-class WorkingDays(BaseModel):
-    date: Optional[str] = Field(
-        p.now().to_date_string(),
-        regex=proper_dates,
-        description="Date to count from for business days.",
-    )
-    number: int = Field(
-        default=8,
-        description="Number of business days to add",
-    )
-
-
-@router.post("/")
-async def business_day(date: WorkingDays):
+@router.get("/")
+async def business_day(
+    date: str = Query(
+        default=p.now().to_date_string(),
+        description="Date to count from.",
+    ),
+    days: Optional[int] = Query(
+        8,
+        description="Number of business days. Default is 8 business days.",
+    ),
+):
     """
     Calculate working days from given date with given number of days.
     """
-    days = working_days(first_date=date.date, num=date.number)
-    return {"date": days}
+    s = re.compile(proper_dates)
+    if s.search(date) is None:
+        raise HTTPException(
+            status_code=400,
+            # Might use datefinder here for date correct for examples given.
+            detail=(
+                f"Date format entered:{date} is incorrect."
+                " Date format must be entered as YYYY-MM-DD e.g. 2021-01-01 "
+                "or MM-DD-YYYY e.g. 01-01-2021"
+            ),
+        )
+    working_date = working_days(first_date=date, num=days)
+    return {"date": working_date}

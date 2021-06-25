@@ -13,6 +13,7 @@ def create_application() -> FastAPI:
         title="Business Days for all!",
         description="Simple API that computes business days and dates.",
         version="0.0.1",
+        docs_url="/",
     )
 
     # routers

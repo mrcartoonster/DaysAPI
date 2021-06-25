@@ -26,6 +26,7 @@ pytest-emoji = "^0.2.0"
 pytest-instafail = "^0.4.2"
 pytest-cov = "^2.12.1"
 interrogate = "^1.4.0"
+requests = "^2.25.1"
 
 [tool.pytest.ini_options]
 addopts = "-rssxX -l --tb=short --strict --emoji -vvv -p no:warnings"
