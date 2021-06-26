@@ -17,8 +17,8 @@ def create_application() -> FastAPI:
     )
 
     # routers
-    application.include_router(business_days.router)
-    application.include_router(calendar_days.router)
+    application.include_router(business_days.router, tags=["Business"])
+    application.include_router(calendar_days.router, tags=["Calendar"])
 
     return application
 

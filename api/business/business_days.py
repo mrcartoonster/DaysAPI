@@ -6,11 +6,10 @@ import pendulum as p
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
 
-from services.business.add_working import working_days
+from services.business.working_helpers import delta_working, working_days
 
 router = APIRouter(
     prefix="/business",
-    tags=["Business"],
     default_response_class=ORJSONResponse,
 )
 
@@ -22,7 +21,7 @@ proper_dates = (
 )
 
 
-@router.get("/")
+@router.get("/days")
 async def business_day(
     date: str = Query(
         default=p.now().to_date_string(),
@@ -51,3 +50,32 @@ async def business_day(
         )
     working_date = working_days(first_date=date, num=days)
     return {"date": working_date}
+
+
+@router.get("/delta")
+async def business_delta(
+    date_one: str = Query(..., description="First date of dates between."),
+    date_two: str = Query(..., description="Second date of dates between."),
+):
+    """
+    Given two dates. This endpoint will output the number of business
+    days between them.
+
+    Please enter dates as YYYY-MM-DD as in 2021-01-01 or MM-DD-YYYY as
+    in 01-01-2021. Must add the zero for single digit months.
+
+    """
+    try:
+        s = re.compile(proper_dates)
+        if s.search(date_one) is None or s.search(date_two) is None:
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    "Date formatted incorrectly. Must be formatted as "
+                    "MM-DD-YYYY(01-01-2020) or YYYY-MM-DDDD(2020-01-01)."
+                ),
+            )
+        delta = delta_working(date_one, date_two)
+        return {"business delta": delta}
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=error)
