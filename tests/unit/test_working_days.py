@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-from services.business.working_helpers import delta_working, working_days
+from services.business.working_helpers import (
+    delta_working,
+    holidays,
+    working_days,
+)
 
 
 def test_working_days_helper_function_passing():
@@ -19,3 +23,10 @@ def test_delta_working_days_helper_function_passing():
         "There are 24 business days between Thursday, December 13 2012"
         " and Friday, January 18 2013."
     )
+
+
+def test_holiday_list_passing(holidaysdict):
+    """
+    Confirm holidays is returned correctly.
+    """
+    assert holidays() == holidaysdict

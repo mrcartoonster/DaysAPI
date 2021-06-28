@@ -87,3 +87,37 @@ def test_delta_days_failing():
             "MM-DD-YYYY(01-01-2020) or YYYY-MM-DDDD(2020-01-01).",
         }
     )
+
+
+def test_holidays_list(holidaysdict):
+    """
+    Passing test for list of holidays for the US.
+    """
+    # GIVEN /business/holidays/2021
+    response = client.get("/business/holidays/2021")
+
+    # THEN assert we receive a 200
+    assert response.status_code == 200
+
+    # THEN assert that correct list is outputted
+    assert response.json() == {"holidays": holidaysdict}
+
+
+def test_holidays_list_failing():
+    """
+    Failing test when 9999 or greater is entered.
+    """
+    # GIVEN /business/holidays/9999
+    response = client.get("/business/holidays/9999")
+
+    # THEN assert we receive 400
+    assert response.status_code == 422
+    # THEN assert correct detailed exception is given
+    assert response.json() == (
+        {
+            "detail": "Year cannot be greater than or equal to 9999. "
+            "Can only go"
+            " up to the year 9998. Yeah, there is no 'Party like it's"
+            " 9999' in this API 😭",
+        }
+    )

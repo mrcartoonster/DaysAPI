@@ -5,7 +5,11 @@ from workalendar.usa import UnitedStates
 
 cal = UnitedStates()
 
+# Pendulum date formatting
 date_fmt = "dddd, MMMM DD YYYY"
+
+# datetime date formatting
+dt_fmt = "%A, %B %d %Y"
 
 
 def working_days(
@@ -36,3 +40,14 @@ def delta_working(
         f"{f_day.format(fmt=date_fmt)} and {s_day.format(fmt=date_fmt)}."
     )
     return working_date
+
+
+def holidays(year: int = p.now().year):
+    """
+    Helper function to return properly formatted holiday dates.
+    """
+    holiday_list = cal.holidays(year)
+    holiday_formatted = {
+        key.strftime(dt_fmt): value for key, value in holiday_list
+    }
+    return holiday_formatted

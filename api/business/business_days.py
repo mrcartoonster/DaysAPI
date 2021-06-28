@@ -3,10 +3,14 @@ import re
 from typing import Optional
 
 import pendulum as p
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Path, Query
 from fastapi.responses import ORJSONResponse
 
-from services.business.working_helpers import delta_working, working_days
+from services.business.working_helpers import (
+    delta_working,
+    holidays,
+    working_days,
+)
 
 router = APIRouter(
     prefix="/business",
@@ -79,3 +83,29 @@ async def business_delta(
         return {"business delta": delta}
     except ValueError as error:
         raise HTTPException(status_code=400, detail=error)
+
+
+@router.get("/holidays/{year}")
+async def business_holidays(
+    year: int = Path(
+        ...,
+        description=(
+            "Return a list of US holidays for given year."
+            " Just enter 4 digit year: 1999."
+        ),
+    )
+):
+    """
+    This is a list of holidays in the US.
+    """
+    if year >= 9999:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "Year cannot be greater than or equal to 9999. Can only go"
+                " up to the year 9998. Yeah, there is no 'Party like it's"
+                " 9999' in this API 😭"
+            ),
+        )
+    holiday_list = holidays(year=year)
+    return {"holidays": holiday_list}
