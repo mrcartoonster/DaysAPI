@@ -35,11 +35,7 @@ def delta_working(
     f_day = p.parse(first_date, strict=False)
     s_day = p.parse(second_date, strict=False)
     num_days = cal.get_working_days_delta(start=f_day, end=s_day)
-    working_date = (
-        f"There are {num_days} business days between "
-        f"{f_day.format(fmt=date_fmt)} and {s_day.format(fmt=date_fmt)}."
-    )
-    return working_date
+    return num_days
 
 
 def holidays(year: int = p.now().year):
@@ -47,7 +43,5 @@ def holidays(year: int = p.now().year):
     Helper function to return properly formatted holiday dates.
     """
     holiday_list = cal.holidays(year)
-    holiday_formatted = {
-        key.strftime(dt_fmt): value for key, value in holiday_list
-    }
+    holiday_formatted = {key.strftime(dt_fmt): value for key, value in holiday_list}
     return holiday_formatted

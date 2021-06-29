@@ -6,7 +6,7 @@ import pendulum as p
 from fastapi import APIRouter, HTTPException, Path, Query
 from fastapi.responses import ORJSONResponse
 
-from models.business_models import Day
+from models.business_models import Day, Delta
 from services.business.working_helpers import (
     delta_working,
     holidays,
@@ -24,9 +24,7 @@ router = APIRouter(
 async def business_day(
     date: str = Query(
         default=p.now().to_date_string(),
-        description=(
-            "Date to count from. Format date as YYYY-MM-DD or MM-DD-YYYY"
-        ),
+        description=("Date to count from. Format date as YYYY-MM-DD or MM-DD-YYYY"),
     ),
     days: Optional[int] = Query(
         8,
@@ -52,10 +50,10 @@ async def business_day(
     return Day(date=date, days=days, enddate=working_date)
 
 
-@router.get("/delta")
+@router.get("/delta", response_model=Delta)
 async def business_delta(
-    date_one: str = Query(..., description="First date of dates between."),
-    date_two: str = Query(..., description="Second date of dates between."),
+    first_date: str = Query(..., description="First date of dates between."),
+    second_date: str = Query(..., description="Second date of dates between."),
 ):
     """
     Given two dates. This endpoint will output the number of business
@@ -67,7 +65,7 @@ async def business_delta(
     """
     try:
         s = re.compile(proper_dates)
-        if s.search(date_one) is None or s.search(date_two) is None:
+        if s.search(first_date) is None or s.search(second_date) is None:
             raise HTTPException(
                 status_code=400,
                 detail=(
@@ -75,8 +73,10 @@ async def business_delta(
                     "MM-DD-YYYY(01-01-2020) or YYYY-MM-DDDD(2020-01-01)."
                 ),
             )
-        delta = delta_working(date_one, date_two)
-        return {"business delta": delta}
+        delta = delta_working(first_date, second_date)
+        return Delta(
+            first_date=first_date, second_date=second_date, business_days=delta
+        )
     except ValueError as error:
         raise HTTPException(status_code=400, detail=error)
 

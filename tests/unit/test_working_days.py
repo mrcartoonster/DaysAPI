@@ -10,19 +10,16 @@ def test_working_days_helper_function_passing():
     """
     Passing working days function.
     """
-    test_date = working_days("02-02-21", 5)
-    assert test_date == "Thursday, February 28 2002"
+    test_date = working_days("2021-06-29", 8)
+    assert test_date == "2021-07-12"
 
 
 def test_delta_working_days_helper_function_passing():
     """
     Passing delta working days.
     """
-    test_date = delta_working("12-13-2012", "01-18-2013")
-    assert test_date == (
-        "There are 24 business days between Thursday, December 13 2012"
-        " and Friday, January 18 2013."
-    )
+    test_date = delta_working("2020-06-20", "2020-07-21")
+    assert test_date == 21
 
 
 def test_holiday_list_passing(holidaysdict):

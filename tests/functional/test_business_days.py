@@ -10,7 +10,7 @@ def test_working_day_passing():
     # GIVEN /business GET request
     response = client.get(
         "/business/days",
-        params={"date": "2022-02-24", "days": 12},
+        params={"date": "2021-06-29", "days": 8},
     )
 
     # THEN assert success response
@@ -18,7 +18,7 @@ def test_working_day_passing():
 
     # THEN assert return JSON is correct with business date given the number
     # of days
-    assert response.json() == {"date": "Monday, March 14 2022"}
+    assert response.json() == {"date": "2021-06-29", "days": 8, "enddate": "2021-07-12"}
 
 
 # Will add parametrized fixtures later
@@ -52,7 +52,7 @@ def test_delta_days_passing():
     # GIVEN /business/delta GET request
     response = client.get(
         "/business/delta",
-        params={"date_one": "12-13-2012", "date_two": "01-18-2013"},
+        params={"first_date": "2020-06-20", "second_date": "2020-07-21"},
     )
 
     # THEN status code is 200 for valid date inputs.
@@ -60,10 +60,7 @@ def test_delta_days_passing():
 
     # THEN assert that text is outputted.
     assert response.json() == (
-        {
-            "business delta": "There are 24 business days between Thursday, "
-            "December 13 2012 and Friday, January 18 2013.",
-        }
+        {"first_date": "2020-06-20", "second_date": "2020-07-21", "business_days": 21}
     )
 
 
@@ -74,7 +71,7 @@ def test_delta_days_failing():
     # GIVEN /business/delta GET request
     response = client.get(
         "/business/delta",
-        params={"date_one": "1-13-21", "date_two": "2-1-2021"},
+        params={"first_date": "1-13-21", "second_date": "2-1-2021"},
     )
 
     # THEN assert that 400 status is given

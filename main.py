@@ -10,7 +10,7 @@ def create_application() -> FastAPI:
     FastAPI application instance.
     """
     application = FastAPI(
-        title="Business Days for all!",
+        title="Business Days for All!",
         description="Simple API that computes business days and dates.",
         version="0.0.1",
         docs_url="/",
