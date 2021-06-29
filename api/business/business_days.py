@@ -6,6 +6,7 @@ import pendulum as p
 from fastapi import APIRouter, HTTPException, Path, Query
 from fastapi.responses import ORJSONResponse
 
+from models.business_models import Day
 from services.business.working_helpers import (
     delta_working,
     holidays,
@@ -19,7 +20,7 @@ router = APIRouter(
 )
 
 
-@router.get("/days")
+@router.get("/days", response_model=Day)
 async def business_day(
     date: str = Query(
         default=p.now().to_date_string(),
@@ -47,7 +48,8 @@ async def business_day(
             ),
         )
     working_date = working_days(first_date=date, num=days)
-    return {"date": working_date}
+
+    return Day(date=date, days=days, enddate=working_date)
 
 
 @router.get("/delta")

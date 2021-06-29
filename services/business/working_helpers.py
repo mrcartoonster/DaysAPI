@@ -22,7 +22,7 @@ def working_days(
     day = p.parse(first_date, strict=False)
     the_day = cal.add_working_days(day, num)
     from_day = p.parse(str(the_day))
-    return from_day.format(fmt=date_fmt)
+    return from_day.to_date_string()
 
 
 def delta_working(
