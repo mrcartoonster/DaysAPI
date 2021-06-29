@@ -27,6 +27,7 @@ pytest-instafail = "^0.4.2"
 pytest-cov = "^2.12.1"
 interrogate = "^1.4.0"
 requests = "^2.25.1"
+pyinspect = "^0.0.8"
 
 [tool.pytest.ini_options]
 addopts = "-rssxX -l --tb=short --strict --emoji -vvv -p no:warnings"

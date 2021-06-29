@@ -6,7 +6,7 @@ from workalendar.usa import UnitedStates
 cal = UnitedStates()
 
 # Pendulum date formatting
-date_fmt = "dddd, MMMM DD YYYY"
+date_fmt = "dddd, MMMM-DD-YYYY"
 
 # datetime date formatting
 dt_fmt = "%A, %B %d %Y"
