@@ -24,7 +24,9 @@ router = APIRouter(
 async def business_day(
     date: str = Query(
         default=p.now().to_date_string(),
-        description=("Date to count from. Format date as YYYY-MM-DD or MM-DD-YYYY"),
+        description=(
+            "Date to count from. Format date as YYYY-MM-DD or MM-DD-YYYY"
+        ),
     ),
     days: Optional[int] = Query(
         8,
@@ -75,7 +77,9 @@ async def business_delta(
             )
         delta = delta_working(first_date, second_date)
         return Delta(
-            first_date=first_date, second_date=second_date, business_days=delta
+            first_date=first_date,
+            second_date=second_date,
+            business_days=delta,
         )
     except ValueError as error:
         raise HTTPException(status_code=400, detail=error)

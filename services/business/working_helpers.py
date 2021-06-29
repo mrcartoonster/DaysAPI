@@ -43,5 +43,7 @@ def holidays(year: int = p.now().year):
     Helper function to return properly formatted holiday dates.
     """
     holiday_list = cal.holidays(year)
-    holiday_formatted = {key.strftime(dt_fmt): value for key, value in holiday_list}
+    holiday_formatted = {
+        key.strftime(dt_fmt): value for key, value in holiday_list
+    }
     return holiday_formatted

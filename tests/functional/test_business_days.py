@@ -18,7 +18,11 @@ def test_working_day_passing():
 
     # THEN assert return JSON is correct with business date given the number
     # of days
-    assert response.json() == {"date": "2021-06-29", "days": 8, "enddate": "2021-07-12"}
+    assert response.json() == {
+        "date": "2021-06-29",
+        "days": 8,
+        "enddate": "2021-07-12",
+    }
 
 
 # Will add parametrized fixtures later
@@ -60,7 +64,11 @@ def test_delta_days_passing():
 
     # THEN assert that text is outputted.
     assert response.json() == (
-        {"first_date": "2020-06-20", "second_date": "2020-07-21", "business_days": 21}
+        {
+            "first_date": "2020-06-20",
+            "second_date": "2020-07-21",
+            "business_days": 21,
+        }
     )
 
 
