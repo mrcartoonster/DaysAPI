@@ -4,7 +4,11 @@
 
 # Clean this up!!!
 # Regex for YYYY-MM-DDDD or MM-DDDD-YYYY
+import re
+
 proper_dates = (
     r"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])|"
     r"^(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])-\d{4}"
 )
+
+date_regex = re.compile(proper_dates)

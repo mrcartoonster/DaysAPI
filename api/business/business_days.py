@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import re
 from typing import Optional
 
 import pendulum as p
@@ -12,7 +11,7 @@ from services.business.working_helpers import (
     holidays,
     working_days,
 )
-from services.utilities.base import proper_dates
+from services.utilities.base import date_regex
 
 router = APIRouter(
     prefix="/business",
@@ -36,8 +35,7 @@ async def business_day(
     """
     Calculate working days from given date with given number of days.
     """
-    s = re.compile(proper_dates)
-    if s.search(date) is None:
+    if date_regex.search(date) is None:
         raise HTTPException(
             status_code=400,
             # Might use datefinder here for date correction for examples given.
@@ -66,8 +64,10 @@ async def business_delta(
 
     """
     try:
-        s = re.compile(proper_dates)
-        if s.search(first_date) is None or s.search(second_date) is None:
+        if (
+            date_regex.search(first_date) is None
+            or date_regex.search(second_date) is None
+        ):
             raise HTTPException(
                 status_code=400,
                 detail=(
