@@ -61,8 +61,8 @@ async def daysago(
         raise HTTPException(
             status_code=404,
             detail=(
-                f"{date} could't be formatted. Please enter date as "
-                "YYYY-MM-DD or make enter a much more completed date."
+                f"{date} cannot be processed. Please enter a date "
+                "that can be parsed out by a machine or human."
             ),
         )
 
@@ -87,5 +87,5 @@ async def daysago(
         days=days,
         hours=hours,
         minutes=minutes,
-        returnd_date=arith,
+        returned_date=arith,
     )

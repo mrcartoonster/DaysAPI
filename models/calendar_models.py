@@ -17,4 +17,4 @@ class Arithmetic(BaseModel):
     hours: int = 0
     minutes: int = 0
     seconds: int = 0
-    returnd_date: str = p.now().add(days=8).to_day_datetime_string()
+    returned_date: str = p.now().add(days=8).to_day_datetime_string()
