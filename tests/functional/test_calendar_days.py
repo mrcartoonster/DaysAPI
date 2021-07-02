@@ -11,7 +11,7 @@ def test_arithmetic_passing():
     Test default behaviour for passing.
     """
     # GIVEN GET Request to /calendar/arithmetic
-    response = client.get("/arithmetic")
+    response = client.get("/calendar/arithmetic")
 
     # THEN assert that 200 is returned.
     assert response.status_code == 200
