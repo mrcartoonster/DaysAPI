@@ -14,6 +14,14 @@ def test_working_days_helper_function_passing():
     assert test_date == "2021-07-12"
 
 
+def test_working_days_helper_function_failing():
+    """
+    Test empty list is returned.
+    """
+    test_date = working_days("1 j 2021", 5)
+    assert test_date == []
+
+
 def test_delta_working_days_helper_function_passing():
     """
     Passing delta working days.

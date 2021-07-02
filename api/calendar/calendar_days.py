@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
 from pendulum import timezones
 
-from models.calendar_models import Arithmetic
+from models.calendar_models import Arithmetic  # , Difference
 from services.calendar.calendar_helpers import arithmetic
 
 router = APIRouter(
@@ -16,7 +16,7 @@ router = APIRouter(
 # May use Depends on this. There's a lot of queries and a lot of lines
 # of code.
 @router.get("/arithmetic", response_model=Arithmetic)
-async def daysago(
+async def calendar_arithmetic(
     date: str = Query(
         default=p.now().to_datetime_string(),
         description="Date for arithmetic calculation.",
@@ -36,20 +36,18 @@ async def daysago(
     seconds: int = Query(default=0, description="number of seconds."),
 ):
     """
-    This endpoint will take in a date and enter number of years, months,
-    days, hours, minutes, and seconds as query parameters and return the
-    date produced from said query parameters.
+    This endpoint will take in a date number of years, months, days,
+    hours, minutes, and seconds as query parameters and return the date
+    with the addtion or subtraction produced from entered query
+    parameters.
 
-    If you want to go into the past, subtract from date and time enterd,
-    add a `-`. For example, I want to go back 10 days I'll enter `-10`.
-    If I want to go into the future 10 days then just enter 10. This goes
-    for all other parameters to go back or forth in time.
+    This endpoint can do addition and subtraction. To do subtraction just add
+    `-` befor the integer like so `-8` and the endpoint will subtract based
+    on the query.
 
-    **Note**: Please enter properly formatted dates and times. This endpoint
-    will try and figure out what is entered but will output incorrect dates
-    and times if date format isn't well formatted.
-
-    *Junk in, junk out.*
+    **Note**: Please enter properly formatted dates and optionally times.
+    This endpoint will try and figure out what is entered but will output
+    incorrect dates and times if date format isn't well formatted.
 
     """
     if tz not in timezones:
@@ -89,3 +87,12 @@ async def daysago(
         minutes=minutes,
         returned_date=arith,
     )
+
+
+@router.get("/difference")
+async def difference():
+    """
+    This endpoint takes in two dates and calculates the difference for
+    you with the queries you enter.
+    """
+    ...

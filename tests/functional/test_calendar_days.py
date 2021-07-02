@@ -60,4 +60,5 @@ def test_arithmetic_incorrect_tz_failing():
     Ensure that when incorrect timezone is entered that error message is
     given.
     """
+    # GIVEN a GET request with incorrect timzone
     ...
