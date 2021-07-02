@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
 # Response models for Calendar endpoints
+import pendulum as p
 from pydantic import BaseModel
 
 
-class DayAgo(BaseModel):
+class Arithmetic(BaseModel):
     """
-    Response model for days_ago endpoint.
+    Response model for arithmetic endpoint.
     """
 
-    date: str
-    days: int
-    past_date: str
+    date_entered: str = p.now().to_day_datetime_string()
+    tz: str = "UTC"
+    years: int = 0
+    months: int = 0
+    days: int = 8
+    hours: int = 0
+    minutes: int = 0
+    seconds: int = 0
+    returnd_date: str = p.now().add(days=8).to_day_datetime_string()

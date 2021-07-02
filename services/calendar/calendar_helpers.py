@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import datefinder as df
 import pendulum as p
+from pendulum import timezones
 
 
 def daterng(start: str, end: str):
@@ -13,18 +15,29 @@ def daterng(start: str, end: str):
     return [_.format("dddd, MM-DD-YYYY") for _ in duration]
 
 
-def days_ago(day: str = p.now().to_date_string(), num: int = 8):
-    """
-    Days ago helper function.
+def arithmetic(
+    date: str,
+    tz: str = "UTC",
+    years: int = 0,
+    months: int = 0,
+    days: int = 8,
+    hours: int = 0,
+    minutes: int = 0,
+    seconds: int = 0,
+) -> str:
+    if tz not in timezones:
+        return f"{tz} is not a timezone we have on file."
 
-    Takes date and subtracts and outputs date string.
-
-    """
-    if day is not None:
-        the_day = p.parse(day, strict=False)
-        ago = the_day - p.duration(num)
-    else:
-        day = p.today()
-        ago = day - p.duration(num)
-
-    return ago.to_date_string()
+    dt = list(df.find_dates(date))
+    if dt == []:
+        return []
+    td = p.parse(dt[0].isoformat())
+    ft = td.add(
+        years=years,
+        months=months,
+        days=days,
+        hours=hours,
+        minutes=minutes,
+        seconds=seconds,
+    )
+    return ft.to_datetime_string()

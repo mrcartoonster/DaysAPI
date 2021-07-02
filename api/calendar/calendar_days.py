@@ -2,10 +2,10 @@
 import pendulum as p
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
+from pendulum import timezones
 
-from models.calendar_models import DayAgo
-from services.calendar.calendar_helpers import days_ago
-from services.utilities.base import date_regex
+from models.calendar_models import Arithmetic
+from services.calendar.calendar_helpers import arithmetic
 
 router = APIRouter(
     prefix="/calendar",
@@ -13,22 +13,79 @@ router = APIRouter(
 )
 
 
-@router.get("/daysago", response_model=DayAgo)
+# May use Depends on this. There's a lot of queries and a lot of lines
+# of code.
+@router.get("/arithmetic", response_model=Arithmetic)
 async def daysago(
     date: str = Query(
-        default=p.now().to_date_string(),
-        description="Date to count back from",
+        default=p.now().to_datetime_string(),
+        description="Date for arithmetic calculation.",
     ),
-    days: int = Query(default=8, description="Number of days to back from."),
+    tz: str = Query(
+        default="UTC",
+        description=(
+            "Time Zone. Timezone must be in"
+            " [IANA](https://bit.ly/3h8wd73) format."
+        ),
+    ),
+    years: int = Query(default=0, description="Number of years."),
+    months: int = Query(default=0, description="Number of months"),
+    days: int = Query(default=8, description="Number of days."),
+    hours: int = Query(default=0, description="Number of hours."),
+    minutes: int = Query(default=0, description="Number of minutes."),
+    seconds: int = Query(default=0, description="number of seconds."),
 ):
     """
-    Enter a date in YYYY-MM-DD or MM-DD-YYYY format as well a number to
-    count back from date to get the date in calendar days.
+    This endpoint will take in a date and enter number of years, months,
+    days, hours, minutes, and seconds as query parameters and return the
+    date produced from said query parameters.
+
+    If you want to go into the past, subtract from date and time enterd,
+    add a `-`. For example, I want to go back 10 days I'll enter `-10`.
+    If I want to go into the future 10 days then just enter 10. This goes
+    for all other parameters to go back or forth in time.
+
+    **Note**: Please enter properly formatted dates and times. This endpoint
+    will try and figure out what is entered but will output incorrect dates
+    and times if date format isn't well formatted.
+
+    *Junk in, junk out.*
+
     """
-    if date_regex.search(date) is None:
+    if tz not in timezones:
         raise HTTPException(
-            status_code=400,
-            detail=(f"Date format: {date} is incorrect."),
+            status_code=422,
+            detail=f"{tz} is not a timzone we have on file",
         )
-    ago = days_ago(date, days)
-    return DayAgo(date=date, days=days, past_date=ago)
+    if len(arithmetic(date)) <= 1:
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                f"{date} could't be formatted. Please enter date as "
+                "YYYY-MM-DD or make enter a much more completed date."
+            ),
+        )
+
+    # Function call
+    arith = arithmetic(
+        date,
+        tz,
+        years,
+        months,
+        days,
+        hours,
+        minutes,
+        seconds,
+    )
+
+    # Returning Response Model
+    return Arithmetic(
+        date_entered=date,
+        tz=tz,
+        years=years,
+        months=months,
+        days=days,
+        hours=hours,
+        minutes=minutes,
+        returnd_date=arith,
+    )
