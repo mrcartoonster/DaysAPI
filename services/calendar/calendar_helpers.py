@@ -41,3 +41,26 @@ def arithmetic(
         seconds=seconds,
     )
     return ft.to_datetime_string()
+
+
+def difference(first_date: str, sec_date: str):
+    fd = list(df.find_dates(first_date))
+    if fd == []:
+        return []
+    sd = list(df.find_dates(sec_date))
+    if sd == []:
+        return []
+    fp = p.parse(fd[0].isoformat())
+    sp = p.parse(sd[0].isoformat())
+    diff_dict = {
+        "years": fp.diff(sp).in_years(),
+        "months": fp.diff(sp).in_months(),
+        "weeks": fp.diff(sp).in_weeks(),
+        "days": fp.diff(sp).in_days(),
+        "hours": fp.diff(sp).in_hours(),
+        "minutes": fp.diff(sp).in_minutes(),
+        "seconds": fp.diff(sp).in_seconds(),
+        "in_words": fp.diff(sp).in_words(),
+    }
+
+    return diff_dict

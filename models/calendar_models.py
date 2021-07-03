@@ -18,3 +18,11 @@ class Arithmetic(BaseModel):
     minutes: int = 0
     seconds: int = 0
     returned_date: str = p.now().add(days=8).to_day_datetime_string()
+
+
+class Difference(BaseModel):
+    """
+    Response model for datetime difference calculation.
+    """
+
+    ...
