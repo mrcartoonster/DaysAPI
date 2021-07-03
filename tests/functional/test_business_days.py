@@ -32,7 +32,7 @@ def test_working_day_failing():
     """
 
     # GIVEN a GET request to /business with incorrectly formatted date
-    response = client.get("/business/days", params={"date": "2-21-2020"})
+    response = client.get("/business/days", params={"date": "2 j 2021"})
 
     # Then status code is 400 for bad request
     assert response.status_code == 400
@@ -40,10 +40,8 @@ def test_working_day_failing():
     # Then detailed message is given for badly formatted date
     assert response.json() == (
         {
-            "detail": "Date format entered:2-21-2020 is "
-            "incorrect. Date format must be"
-            " entered as YYYY-MM-DD e.g. 2021-01-01 or MM-DD-YYYY e.g."
-            " 01-01-2021",
+            "detail": "2 j 2021 couldn't be parsed as a date. Please enter a"
+            " human readable or at least machine readable date.",
         }
     )
 
@@ -79,7 +77,7 @@ def test_delta_days_failing():
     # GIVEN /business/delta GET request
     response = client.get(
         "/business/delta",
-        params={"first_date": "1-13-21", "second_date": "2-1-2021"},
+        params={"first_date": "1 j 2020", "second_date": "2-1-2021"},
     )
 
     # THEN assert that 400 status is given
@@ -88,8 +86,8 @@ def test_delta_days_failing():
     # THEN assert correct detailed error is given
     assert response.json() == (
         {
-            "detail": "Date formatted incorrectly. Must be formatted as "
-            "MM-DD-YYYY(01-01-2020) or YYYY-MM-DDDD(2020-01-01).",
+            "detail": "Couldn't parse dates. Please enter human readable or"
+            " machine readable dates.",
         }
     )
 

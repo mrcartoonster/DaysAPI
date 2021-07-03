@@ -11,7 +11,6 @@ from services.business.working_helpers import (
     holidays,
     working_days,
 )
-from services.utilities.base import date_regex
 
 router = APIRouter(
     prefix="/business",
@@ -24,7 +23,9 @@ async def business_day(
     date: str = Query(
         default=p.now().to_date_string(),
         description=(
-            "Date to count from. Format date as YYYY-MM-DD or MM-DD-YYYY"
+            "Enter date to add or subtract business days from."
+            "You can enter any readable date. Doesn't have to be ISO or RFC"
+            " formatted."
         ),
     ),
     days: Optional[int] = Query(
@@ -34,18 +35,20 @@ async def business_day(
 ):
     """
     Calculate working days from given date with given number of days.
+
+    The timezone is set to US/Eastern due to US banks operate only in
+    that timezone.
+
     """
-    if date_regex.search(date) is None:
+    if working_days(date) == []:
         raise HTTPException(
             status_code=400,
-            # Might use datefinder here for date correction for examples given.
             detail=(
-                f"Date format entered:{date} is incorrect."
-                " Date format must be entered as YYYY-MM-DD e.g. 2021-01-01 "
-                "or MM-DD-YYYY e.g. 01-01-2021"
+                f"{date} couldn't be parsed as a date. Please enter a human"
+                " readable or at least machine readable date."
             ),
         )
-    working_date = working_days(first_date=date, num=days)
+    working_date = working_days(date=date, days=days)
 
     return Day(date=date, days=days, enddate=working_date)
 
@@ -59,30 +62,24 @@ async def business_delta(
     Given two dates. This endpoint will output the number of business
     days between them.
 
-    Please enter dates as YYYY-MM-DD as in 2021-01-01 or MM-DD-YYYY as
-    in 01-01-2021. Must add the zero for single digit months.
+    Dates can be entered in any order. Please enter readable dates.
+    Doesn't have to be ISO or RFC formatted dates.
 
     """
-    try:
-        if (
-            date_regex.search(first_date) is None
-            or date_regex.search(second_date) is None
-        ):
-            raise HTTPException(
-                status_code=400,
-                detail=(
-                    "Date formatted incorrectly. Must be formatted as "
-                    "MM-DD-YYYY(01-01-2020) or YYYY-MM-DDDD(2020-01-01)."
-                ),
-            )
-        delta = delta_working(first_date, second_date)
-        return Delta(
-            first_date=first_date,
-            second_date=second_date,
-            business_days=delta,
+    if delta_working(first_date, second_date) == []:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Couldn't parse dates. Please enter human readable or"
+                " machine readable dates."
+            ),
         )
-    except ValueError as error:
-        raise HTTPException(status_code=400, detail=error)
+    delta = delta_working(first_date, second_date)
+    return Delta(
+        first_date=first_date,
+        second_date=second_date,
+        business_days=delta,
+    )
 
 
 @router.get("/holidays/{year}")

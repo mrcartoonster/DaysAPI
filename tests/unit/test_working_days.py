@@ -30,6 +30,17 @@ def test_delta_working_days_helper_function_passing():
     assert test_date == 21
 
 
+# We'll update to use fixtuers for this.
+def test_delta_working_days_helper_function_failing():
+    """
+    Test when incorrect date is entered that test fails.
+    """
+    test_date = delta_working("1 j 2021", "2-2-21")
+    test_date2 = delta_working("1-1-21", "2 j 21")
+    assert test_date == []
+    assert test_date2 == []
+
+
 def test_holiday_list_passing(holidaysdict):
     """
     Confirm holidays is returned correctly.

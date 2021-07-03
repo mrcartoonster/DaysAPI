@@ -55,7 +55,7 @@ async def calendar_arithmetic(
             status_code=422,
             detail=f"{tz} is not a timzone we have on file",
         )
-    if len(arithmetic(date)) <= 1:
+    if arithmetic(date) == []:
         raise HTTPException(
             status_code=404,
             detail=(
