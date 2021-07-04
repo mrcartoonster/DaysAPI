@@ -4,8 +4,8 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
 from pendulum import timezones
 
-from models.calendar_models import Arithmetic  # , Difference
-from services.calendar.calendar_helpers import arithmetic
+from models.calendar_models import Arithmetic, Diff
+from services.calendar.calendar_helpers import arithmetic, difference
 
 router = APIRouter(
     prefix="/calendar",
@@ -89,10 +89,44 @@ async def calendar_arithmetic(
     )
 
 
-@router.get("/difference")
-async def difference():
+@router.get("/difference", response_model=Diff)
+async def difference(
+    date_one: str = Query(
+        default=p.now().to_date_string(),
+        title="first date",
+        description="First date to get difference",
+    ),
+    date_two: str = Query(
+        default=p.now().add(months=2).to_date_string(),
+        title="second date",
+        description="Second date to get calendar difference",
+    ),
+    tz: str = Query(
+        default="UTC",
+        title="Time Zone",
+        description="Please entered prefered timzone. Use `IANA` format.",
+    ),
+):
     """
     This endpoint takes in two dates and calculates the difference for
     you with the queries you enter.
     """
-    ...
+    if tz not in timezones:
+        raise HTTPException(
+            status_code=400,
+            detail=f"{tz} is not a timzone we have on file.",
+        )
+    if difference(date_one=date_one, date_two=date_two, tz=tz) == []:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Couldn't parse dates entered. Please enter human or machine"
+                " readable dates."
+            ),
+        )
+
+    # Function call
+    diff = difference(date_one, date_two, tz)
+
+    # Response Model
+    return Diff(period_one=date_one, period_two=date_two, difference=diff)

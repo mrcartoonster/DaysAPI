@@ -43,16 +43,25 @@ def arithmetic(
     return ft.to_datetime_string()
 
 
-def difference(first_date: str, sec_date: str):
+def difference(first_date: str, sec_date: str, tz: str = "UTC"):
+    if tz not in timezones:
+        return f"{tz} is not a timezone we have on file."
+
     fd = list(df.find_dates(first_date))
+
     if fd == []:
         return []
+
     sd = list(df.find_dates(sec_date))
     if sd == []:
         return []
+
     fp = p.parse(fd[0].isoformat())
+
     sp = p.parse(sd[0].isoformat())
+
     diff_dict = {
+        "tz": tz,
         "years": fp.diff(sp).in_years(),
         "months": fp.diff(sp).in_months(),
         "weeks": fp.diff(sp).in_weeks(),
@@ -60,7 +69,7 @@ def difference(first_date: str, sec_date: str):
         "hours": fp.diff(sp).in_hours(),
         "minutes": fp.diff(sp).in_minutes(),
         "seconds": fp.diff(sp).in_seconds(),
-        "in_words": fp.diff(sp).in_words(),
+        "words": fp.diff(sp).in_words(),
     }
 
     return diff_dict
