@@ -43,7 +43,7 @@ def arithmetic(
     return ft.to_datetime_string()
 
 
-def difference(first_date: str, sec_date: str, tz: str = "UTC"):
+def differ(first_date: str, sec_date: str, tz: str = "UTC"):
     if tz not in timezones:
         return f"{tz} is not a timezone we have on file."
 

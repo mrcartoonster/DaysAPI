@@ -5,7 +5,7 @@ from fastapi.responses import ORJSONResponse
 from pendulum import timezones
 
 from models.calendar_models import Arithmetic, Diff
-from services.calendar.calendar_helpers import arithmetic, difference
+from services.calendar.calendar_helpers import arithmetic, differ
 
 router = APIRouter(
     prefix="/calendar",
@@ -53,7 +53,7 @@ async def calendar_arithmetic(
     if tz not in timezones:
         raise HTTPException(
             status_code=422,
-            detail=f"{tz} is not a timzone we have on file",
+            detail=f"{tz} is not a timezone we have on file.",
         )
     if arithmetic(date) == []:
         raise HTTPException(
@@ -126,7 +126,11 @@ async def difference(
         )
 
     # Function call
-    diff = difference(date_one, date_two, tz)
+    diff = differ(date_one, date_two, tz)
 
     # Response Model
-    return Diff(period_one=date_one, period_two=date_two, difference=diff)
+    return Diff(
+        period_one={"date_one": date_one},
+        period_two={"date_two": date_two},
+        difference=diff,
+    )

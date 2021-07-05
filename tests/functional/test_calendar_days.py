@@ -5,6 +5,22 @@ from main import app
 
 client = TestClient(app)
 
+success_response = {
+    "period_one": {"date_one": "07-06-2022"},
+    "period_two": {"date_two": "11-08-2022"},
+    "difference": {
+        "time_zone": "UTC",
+        "years": 0,
+        "months": 4,
+        "weeks": 17,
+        "days": 125,
+        "hours": 3000,
+        "minutes": 180000,
+        "seconds": 10800000,
+        "words": "4 months 2 days",
+    },
+}
+
 
 def test_arithmetic_passing():
     """
@@ -61,4 +77,39 @@ def test_arithmetic_incorrect_tz_failing():
     given.
     """
     # GIVEN a GET request with incorrect timzone
+    response = client.get(
+        "/calendar/arithmetic",
+        params={"date": "02-02-2021", "tz": "US/Conti"},
+    )
+
+    # THEN assert response is 422
+    assert response.status_code == 422
+
+    # THEN assert correct error message is given
+    assert response.json() == (
+        {"detail": "US/Conti is not a timezone we have on file."}
+    )
+
+
+def test_difference_passing():
+    """
+    Create test for correct dates entered passing.
+    """
+    # GIVEN a GET request with valid date.
+    response = client.get(
+        "/calendar/difference",
+        params={"date_one": "07-06-2022", "date_two": "11-08-2022"},
+    )
+
+    # THEN assert success 200
+    assert response.status_code == 200
+
+    # THEN assert response matches
+    assert response.json() == success_response
+
+
+def test_difference_failing_formatted_date():
+    """
+    Create failing test when poorly formatted test is entered.
+    """
     ...
