@@ -48,16 +48,12 @@ def differ(first_date: str, sec_date: str, tz: str = "UTC"):
         return f"{tz} is not a timezone we have on file."
 
     fd = list(df.find_dates(first_date))
-
-    if fd == []:
-        return []
-
     sd = list(df.find_dates(sec_date))
-    if sd == []:
+
+    if fd == [] or sd == []:
         return []
 
     fp = p.parse(fd[0].isoformat())
-
     sp = p.parse(sd[0].isoformat())
 
     diff_dict = {

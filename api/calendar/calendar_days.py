@@ -130,7 +130,13 @@ async def difference(
 
     # Response Model
     return Diff(
-        period_one={"date_one": date_one},
-        period_two={"date_two": date_two},
+        period_one={
+            "date_one": date_one,
+            "formatted_date_one": date_one,
+        },
+        period_two={
+            "date_two": date_two,
+            "formatted_date_two": date_two,
+        },
         difference=diff,
     )

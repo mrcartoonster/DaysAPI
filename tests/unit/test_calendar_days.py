@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Test for calenddar function helpers
-from services.calendar.calendar_helpers import arithmetic, difference
+from services.calendar.calendar_helpers import arithmetic, differ
 
 
 def test_arithmetic_add_passing():
@@ -41,12 +41,13 @@ def test_arithmetic_datetime_failing():
     assert test_date == []
 
 
-def test_difference_passing():
+def test_differ_passing():
     """
     Ensure passing when 2 valid dates are entered.
     """
-    test_dates = difference("01-22-2021", "03-02-2023")
+    test_dates = differ("01-22-2021", "03-02-2023")
     assert test_dates == {
+        "tz": "UTC",
         "years": 2,
         "months": 25,
         "weeks": 109,
@@ -54,13 +55,13 @@ def test_difference_passing():
         "hours": 18456,
         "minutes": 1107360,
         "seconds": 66441600,
-        "in_words": "2 years 1 month 1 week 1 day",
+        "words": "2 years 1 month 1 week 1 day",
     }
 
 
-def test_difference_failing():
+def test_differ_failing():
     """
     Ensure None is returned when date cannot be parsed.
     """
-    test_dates = difference("2 j 2021", "03-03-2023")
+    test_dates = differ("2 j 2021", "03-03-2023")
     assert test_dates == []

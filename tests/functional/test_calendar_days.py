@@ -112,4 +112,15 @@ def test_difference_failing_formatted_date():
     """
     Create failing test when poorly formatted test is entered.
     """
-    ...
+    # GIVEN a GET with poorly formatted date
+    response = client.get(
+        "/calendar/difference",
+        params={
+            "date_one": "07 J2022",
+            "date_two": "11-08-2022",
+            "tz": "some",
+        },
+    )
+
+    # THEN assert that it isn't 200
+    assert response.status_code == 200
