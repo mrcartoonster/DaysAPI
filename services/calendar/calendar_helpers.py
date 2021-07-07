@@ -69,3 +69,12 @@ def differ(first_date: str, sec_date: str, tz: str = "UTC"):
     }
 
     return diff_dict
+
+
+def isoformatter(the_date: str) -> str:
+    """
+    This function will return properly formatted date.
+    """
+    fd = list(df.find_dates(the_date))
+
+    return fd[0].isoformat()

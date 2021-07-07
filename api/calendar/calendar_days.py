@@ -5,7 +5,7 @@ from fastapi.responses import ORJSONResponse
 from pendulum import timezones
 
 from models.calendar_models import Arithmetic, Diff
-from services.calendar.calendar_helpers import arithmetic, differ
+from services.calendar.calendar_helpers import arithmetic, differ, isoformatter
 
 router = APIRouter(
     prefix="/calendar",
@@ -127,16 +127,18 @@ async def difference(
 
     # Function call
     diff = differ(date_one, date_two, tz)
+    date_1 = isoformatter(date_one)
+    date_2 = isoformatter(date_two)
 
     # Response Model
     return Diff(
         period_one={
             "date_one": date_one,
-            "formatted_date_one": date_one,
+            "formatted_date_one": date_1,
         },
         period_two={
             "date_two": date_two,
-            "formatted_date_two": date_two,
+            "formatted_date_two": date_2,
         },
         difference=diff,
     )

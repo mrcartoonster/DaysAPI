@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Response models for Calendar endpoints
 import pendulum as p
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Arithmetic(BaseModel):
@@ -20,27 +20,21 @@ class Arithmetic(BaseModel):
     returned_date: str = p.now().add(days=8).to_day_datetime_string()
 
 
-class FormatDateString(BaseModel):
-    """
-    This model will be to pass in formmated date string.
-
-    We'll have to make a quick helper function in
-    services.calendar.calendar_helpers that will takein the datstr and
-    then parse it and then pass to pendulum.parse and return a
-    datestring format
-
-    """
-
-    ...
-
-
 class PeriodOne(BaseModel):
     """
     First entered date.
     """
 
-    date_one: str = p.now().to_datetime_string()
-    formatted_date_one: str = p.now().to_datetime_string()
+    date_one: str = Field(
+        p.now().to_datetime_string(),
+        title="Date One",
+        description="First date entered",
+    )
+    formatted_date_one: str = Field(
+        p.now().to_datetime_string(),
+        title="Date One formatted",
+        description="Date One entered formatted in ISO-8601 format",
+    )
 
 
 class PeriodTwo(BaseModel):
@@ -48,8 +42,16 @@ class PeriodTwo(BaseModel):
     Second entered date.
     """
 
-    date_two: str = p.now().add(months=2).to_datetime_string()
-    formatted_date_two: str = p.now().add(months=2).to_datetime_string()
+    date_two: str = Field(
+        p.now().add(months=2).to_datetime_string(),
+        title="Date Two",
+        description="Second date entred",
+    )
+    formatted_date_two: str = Field(
+        p.now().add(months=2).to_datetime_string(),
+        title="Date two formatted",
+        description="Date entered formatted in ISO-8601 format",
+    )
 
 
 class Difference(BaseModel):
