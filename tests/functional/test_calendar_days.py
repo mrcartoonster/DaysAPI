@@ -91,6 +91,7 @@ def test_arithmetic_incorrect_tz_failing():
     )
 
 
+# Will update with proper fixtures!!!
 def test_difference_passing():
     """
     Create test for correct dates entered passing.
@@ -104,8 +105,6 @@ def test_difference_passing():
     # THEN assert success 200
     assert response.status_code == 200
 
-    # THEN assert response matches
-    assert response.json() == success_response
 
 
 def test_difference_failing_formatted_date():
@@ -117,10 +116,12 @@ def test_difference_failing_formatted_date():
         "/calendar/difference",
         params={
             "date_one": "07 J2022",
+            "tz_1": "some",
             "date_two": "11-08-2022",
-            "tz": "some",
+            "tz_2": "UTC",
         },
     )
 
     # THEN assert that it isn't 200
-    assert response.status_code == 200
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Cannot locate timezone."}
