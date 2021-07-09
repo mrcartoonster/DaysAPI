@@ -31,7 +31,7 @@ def arithmetic(
     dt = list(df.find_dates(date))
     if dt == []:
         return []
-    td = p.parse(dt[0].isoformat())
+    td = p.parse(dt[0].isoformat(), tz=tz)
     ft = td.add(
         years=years,
         months=months,
@@ -43,9 +43,9 @@ def arithmetic(
     return ft.to_datetime_string()
 
 
-def differ(first_date: str, sec_date: str, tz: str = "UTC"):
-    if tz not in timezones:
-        return f"{tz} is not a timezone we have on file."
+def differ(first_date: str, sec_date: str, tz1: str = "UTC", tz2: str = "UTC"):
+    if tz1 not in timezones or tz2 not in timezones:
+        return "Cannot locate timezones."
 
     fd = list(df.find_dates(first_date))
     sd = list(df.find_dates(sec_date))
@@ -53,11 +53,12 @@ def differ(first_date: str, sec_date: str, tz: str = "UTC"):
     if fd == [] or sd == []:
         return []
 
-    fp = p.parse(fd[0].isoformat())
-    sp = p.parse(sd[0].isoformat())
+    fp = p.parse(fd[0].isoformat(), tz=tz1)
+    sp = p.parse(sd[0].isoformat(), tz=tz2)
 
     diff_dict = {
-        "tz": tz,
+        "time_zone_one": tz1,
+        "time_zone_two": tz2,
         "years": fp.diff(sp).in_years(),
         "months": fp.diff(sp).in_months(),
         "weeks": fp.diff(sp).in_weeks(),
@@ -71,10 +72,11 @@ def differ(first_date: str, sec_date: str, tz: str = "UTC"):
     return diff_dict
 
 
-def isoformatter(the_date: str) -> str:
+def isoformatter(the_date: str, tz: str = "UTC") -> str:
     """
     This function will return properly formatted date.
     """
     fd = list(df.find_dates(the_date))
+    fp = p.parse(fd[0].isoformat(), tz=tz)
 
-    return fd[0].isoformat()
+    return fp.to_iso8601_string()

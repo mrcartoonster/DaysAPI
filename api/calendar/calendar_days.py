@@ -96,12 +96,17 @@ async def difference(
         title="first date",
         description="First date to get difference",
     ),
+    tz_1: str = Query(
+        default="UTC",
+        title="First date time zone",
+        description="Please entered prefered timzone. Use `IANA` format.",
+    ),
     date_two: str = Query(
         default=p.now().add(months=2).to_date_string(),
         title="second date",
         description="Second date to get calendar difference",
     ),
-    tz: str = Query(
+    tz_2: str = Query(
         default="UTC",
         title="Time Zone",
         description="Please entered prefered timzone. Use `IANA` format.",
@@ -111,12 +116,15 @@ async def difference(
     This endpoint takes in two dates and calculates the difference for
     you with the queries you enter.
     """
-    if tz not in timezones:
+    if tz_1 not in timezones or tz_2 not in timezones:
         raise HTTPException(
             status_code=400,
-            detail=f"{tz} is not a timzone we have on file.",
+            detail="Cannot locate timezone.",
         )
-    if difference(date_one=date_one, date_two=date_two, tz=tz) == []:
+    if (
+        difference(date_one=date_one, tz_1=tz_1, date_two=date_two, tz_2=tz_2)
+        == []
+    ):
         raise HTTPException(
             status_code=400,
             detail=(
@@ -126,9 +134,9 @@ async def difference(
         )
 
     # Function call
-    diff = differ(date_one, date_two, tz)
-    date_1 = isoformatter(date_one)
-    date_2 = isoformatter(date_two)
+    diff = differ(date_one, date_two, tz_1, tz_2)
+    date_1 = isoformatter(date_one, tz_1)
+    date_2 = isoformatter(date_two, tz_2)
 
     # Response Model
     return Diff(

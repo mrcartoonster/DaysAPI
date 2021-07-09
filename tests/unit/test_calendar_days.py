@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # Test for calenddar function helpers
+import pendulum as p
+
 from services.calendar.calendar_helpers import arithmetic, differ
 
 
@@ -45,18 +47,22 @@ def test_differ_passing():
     """
     Ensure passing when 2 valid dates are entered.
     """
-    test_dates = differ("01-22-2021", "03-02-2023")
-    assert test_dates == {
-        "tz": "UTC",
-        "years": 2,
-        "months": 25,
-        "weeks": 109,
-        "days": 769,
-        "hours": 18456,
-        "minutes": 1107360,
-        "seconds": 66441600,
-        "words": "2 years 1 month 1 week 1 day",
-    }
+    # We'll make fixtures later for this
+    t1 = p.datetime(2021, 7, 12, 4, 22, tz="UTC")
+    t2 = p.datetime(2021, 9, 6, 12, 13, tz="Pacific/Tahiti")
+
+    test_dates = differ(
+        first_date=t1.to_datetime_string(),
+        sec_date=t2.to_datetime_string(),
+        tz1="UTC",
+        tz2="Pacific/Tahiti",
+    )
+    # We'll make this more robust with fixtures later on.
+    assert t1.diff(t2).in_hours() in test_dates.values()
+    assert (
+        t1.timezone_name in test_dates.values()
+        and t2.timezone_name in test_dates.values()
+    )
 
 
 def test_differ_failing():
