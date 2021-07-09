@@ -106,7 +106,6 @@ def test_difference_passing():
     assert response.status_code == 200
 
 
-
 def test_difference_failing_formatted_date():
     """
     Create failing test when poorly formatted test is entered.

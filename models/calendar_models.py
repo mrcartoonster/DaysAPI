@@ -9,15 +9,25 @@ class Arithmetic(BaseModel):
     Response model for arithmetic endpoint.
     """
 
-    date_entered: str = p.now().to_day_datetime_string()
-    tz: str = "UTC"
-    years: int = 0
-    months: int = 0
-    days: int = 8
-    hours: int = 0
-    minutes: int = 0
-    seconds: int = 0
-    returned_date: str = p.now().add(days=8).to_iso8601_string()
+    date_entered: str = Field(
+        default=p.now().to_day_datetime_string(),
+        description="Date enterd to count days from",
+    )
+    tz: str = Field(
+        default="UTC",
+        title="Time Zone",
+        description="Selected Time Zone.",
+    )
+    years: int = Field(default=0, description="Number of years")
+    months: int = Field(default=0, description="Number of months")
+    days: int = Field(default=8, description="Number of days")
+    hours: int = Field(default=0, description="Number of hours")
+    minutes: int = Field(default=0, description="Number of minutes")
+    seconds: int = Field(default=0, description="Number of seconds")
+    returned_date: str = Field(
+        default=p.now().add(days=8).to_iso8601_string(),
+        description="Returned date after calculation",
+    )
 
 
 class PeriodOne(BaseModel):
