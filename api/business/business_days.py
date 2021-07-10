@@ -55,8 +55,14 @@ async def business_day(
 
 @router.get("/delta", response_model=Delta)
 async def business_delta(
-    first_date: str = Query(..., description="First date of dates between."),
-    second_date: str = Query(..., description="Second date of dates between."),
+    first_date: str = Query(
+        default=p.now().to_date_string(),
+        description="First date of dates between.",
+    ),
+    second_date: str = Query(
+        default=p.now().add(days=8).to_date_string(),
+        description="Second date of dates between.",
+    ),
 ):
     """
     Given two dates. This endpoint will output the number of business

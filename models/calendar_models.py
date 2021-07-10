@@ -6,33 +6,33 @@ from pydantic import BaseModel, Field
 
 class Arithmetic(BaseModel):
     """
-    Response model for arithmetic endpoint.
+    JSON Schema Response model for arithmetic endpoint.
     """
 
     date_entered: str = Field(
         default=p.now().to_day_datetime_string(),
-        description="Date enterd to count days from",
+        description="Date enterd to count days from.",
     )
     tz: str = Field(
         default="UTC",
         title="Time Zone",
         description="Selected Time Zone.",
     )
-    years: int = Field(default=0, description="Number of years")
-    months: int = Field(default=0, description="Number of months")
-    days: int = Field(default=8, description="Number of days")
-    hours: int = Field(default=0, description="Number of hours")
-    minutes: int = Field(default=0, description="Number of minutes")
-    seconds: int = Field(default=0, description="Number of seconds")
+    years: int = Field(default=0, description="Number of years.")
+    months: int = Field(default=0, description="Number of months.")
+    days: int = Field(default=8, description="Number of days.")
+    hours: int = Field(default=0, description="Number of hours.")
+    minutes: int = Field(default=0, description="Number of minutes.")
+    seconds: int = Field(default=0, description="Number of seconds.")
     returned_date: str = Field(
         default=p.now().add(days=8).to_iso8601_string(),
-        description="Returned date after calculation",
+        description="Returned date after calculation.",
     )
 
 
 class PeriodOne(BaseModel):
     """
-    First entered date.
+    JSON Schema Response model for first entered date.
     """
 
     date_one: str = Field(
@@ -49,7 +49,7 @@ class PeriodOne(BaseModel):
 
 class PeriodTwo(BaseModel):
     """
-    Second entered date.
+    JSON Schema Response Mode for second date entered.
     """
 
     date_two: str = Field(
@@ -66,7 +66,7 @@ class PeriodTwo(BaseModel):
 
 class Difference(BaseModel):
     """
-    Response model for datetime difference calculation.
+    JSON Schema Response model for datetime difference calculation.
     """
 
     time_zone_one: str = Field(
@@ -77,19 +77,28 @@ class Difference(BaseModel):
         default="UTC",
         description="Time zone for date two.",
     )
-    years: int = 0
-    months: int = 0
-    weeks: int = 0
-    days: int = 0
-    hours: int = 0
-    minutes: int = 0
-    seconds: int = 0
-    words: str = "4 years 3 months 2 weeks and 1 day til' I'm out!"
+    years: int = Field(default=0, description="Number of years.")
+    months: int = Field(default=0, description="Number of months.")
+    weeks: int = Field(
+        default=0,
+        description="Number of weeks.",
+    )
+    days: int = Field(default=0, description="Number of days.")
+    hours: int = Field(
+        default=0,
+        description="Number of hours.",
+    )
+    minutes: int = Field(default=0, description="Number of minutes.")
+    seconds: int = Field(default=0, description="Number of seconds.")
+    words: str = Field(
+        default="4 years 3 months 2 weeks and 1 day til' I'm out!",
+        description="Calculation in human readable form.",
+    )
 
 
 class Diff(BaseModel):
     """
-    Response Model for Difference endpoint.
+    JSON Schema Response Model for Difference endpoint.
     """
 
     period_one: PeriodOne
