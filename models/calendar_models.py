@@ -121,7 +121,10 @@ class WeekDay(BaseModel):
     )
     is_weekday: bool = Field(
         default=True,
-        description="True or False of date given is weekday",
+        description=(
+            "True if date entered is a week day and False if it isn't"
+            " As in if day is Saturday or Sunday, `false` will be returned"
+        ),
     )
     day_of_week: str = Field(
         default="Monday",

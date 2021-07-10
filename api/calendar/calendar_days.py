@@ -167,6 +167,9 @@ def is_weekday(
 ):
     """
     Endpoint will return True or False of date entered is a weekday.
+
+    If date is a Saturday or Sunday, then `false` will be returned.
+
     """
     if weekday(date) is None:
         raise HTTPException(
