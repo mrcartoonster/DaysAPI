@@ -19,7 +19,7 @@ def test_working_days_helper_function_failing():
     Test empty list is returned.
     """
     test_date = working_days("1 j 2021", 5)
-    assert test_date == []
+    assert test_date is None
 
 
 def test_delta_working_days_helper_function_passing():
@@ -37,8 +37,8 @@ def test_delta_working_days_helper_function_failing():
     """
     test_date = delta_working("1 j 2021", "2-2-21")
     test_date2 = delta_working("1-1-21", "2 j 21")
-    assert test_date == []
-    assert test_date2 == []
+    assert test_date is None
+    assert test_date2 is None
 
 
 def test_holiday_list_passing(holidaysdict):

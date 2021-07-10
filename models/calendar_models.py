@@ -104,3 +104,26 @@ class Diff(BaseModel):
     period_one: PeriodOne
     period_two: PeriodTwo
     difference: Difference
+
+
+class WeekDay(BaseModel):
+    """
+    JSON Schema Response Model for is_weekday endpoint.
+    """
+
+    date_entered: str = Field(
+        default=p.now().to_date_string(),
+        description="Entered format of datestring.",
+    )
+    isoformat: str = Field(
+        default=p.now().to_iso8601_string(),
+        description="ISO-8601 format of datestring",
+    )
+    is_weekday: bool = Field(
+        default=True,
+        description="True or False of date given is weekday",
+    )
+    day_of_week: str = Field(
+        default="Monday",
+        description="Day of week name of date entered.",
+    )

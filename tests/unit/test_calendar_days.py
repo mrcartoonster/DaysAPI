@@ -2,7 +2,7 @@
 # Test for calenddar function helpers
 import pendulum as p
 
-from services.calendar.calendar_helpers import arithmetic, differ
+from services.calendar.calendar_helpers import arithmetic, differ, weekday
 
 
 def test_arithmetic_add_passing():
@@ -40,7 +40,7 @@ def test_arithmetic_datetime_failing():
 
     """
     test_date = arithmetic("2, j 2011")
-    assert test_date == []
+    assert test_date is None
 
 
 def test_differ_passing():
@@ -70,4 +70,21 @@ def test_differ_failing():
     Ensure None is returned when date cannot be parsed.
     """
     test_dates = differ("2 j 2021", "03-03-2023")
-    assert test_dates == []
+    assert test_dates is None
+
+
+def test_weekday_passing():
+    """
+    Test that when given weekday True is outputted.
+    """
+    test_date = weekday("07-07-2021")
+    assert test_date is True
+
+
+def test_weekday_failing():
+    """
+    Test when date entered is badely formatted an empty list is
+    returned.
+    """
+    test_date = weekday("2 j 22")
+    assert test_date is None

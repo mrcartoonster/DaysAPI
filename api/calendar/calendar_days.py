@@ -4,8 +4,14 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
 from pendulum import timezones
 
-from models.calendar_models import Arithmetic, Diff
-from services.calendar.calendar_helpers import arithmetic, differ, isoformatter
+from models.calendar_models import Arithmetic, Diff, WeekDay
+from services.calendar.calendar_helpers import (
+    arithmetic,
+    day_of_week,
+    differ,
+    isoformatter,
+    weekday,
+)
 
 router = APIRouter(
     prefix="/calendar",
@@ -55,7 +61,7 @@ async def calendar_arithmetic(
             status_code=422,
             detail=f"{tz} is not a timezone we have on file.",
         )
-    if arithmetic(date) == []:
+    if arithmetic(date) is None:
         raise HTTPException(
             status_code=404,
             detail=(
@@ -123,7 +129,7 @@ async def difference(
         )
     if (
         difference(date_one=date_one, tz_1=tz_1, date_two=date_two, tz_2=tz_2)
-        == []
+        is None
     ):
         raise HTTPException(
             status_code=400,
@@ -149,4 +155,31 @@ async def difference(
             "formatted_date_two": date_2,
         },
         difference=diff,
+    )
+
+
+@router.get("/is_weekday", response_model=WeekDay)
+def is_weekday(
+    date: str = Query(
+        default=p.now().to_date_string(),
+        description="Date to check for weekday.",
+    ),
+):
+    """
+    Endpoint will return True or False of date entered is a weekday.
+    """
+    if weekday(date) is None:
+        raise HTTPException(
+            status_code=422,
+            detail=f"{date} isn't a date that can be interepreted.",
+        )
+    wk = weekday(date)
+    iso = isoformatter(date)
+    dw = day_of_week(date)
+
+    return WeekDay(
+        date_entered=date,
+        isoformat=iso,
+        is_weekday=wk,
+        day_of_week=dw,
     )

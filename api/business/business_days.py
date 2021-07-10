@@ -40,7 +40,7 @@ async def business_day(
     that timezone.
 
     """
-    if working_days(date) == []:
+    if working_days(date) is None:
         raise HTTPException(
             status_code=400,
             detail=(
@@ -72,7 +72,7 @@ async def business_delta(
     Doesn't have to be ISO or RFC formatted dates.
 
     """
-    if delta_working(first_date, second_date) == []:
+    if delta_working(first_date, second_date) is None:
         raise HTTPException(
             status_code=400,
             detail=(
