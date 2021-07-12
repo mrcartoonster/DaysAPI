@@ -124,3 +124,17 @@ def test_difference_failing_formatted_date():
     # THEN assert that it isn't 200
     assert response.status_code == 400
     assert response.json() == {"detail": "Cannot locate timezone."}
+
+
+def test_is_weekday_passing():
+    """
+    Passing test for is_weekday endpoint.
+    """
+    # GIVEN a GET request to /calendar/is_weekday
+    response = client.get("/calendar/is_weekday", params={"date": "07-09-21"})
+
+    # Then 200 response is given
+    assert response.status_code == 200
+
+    # Then assert that is_weekday is True
+    assert response.json()["is_weekday"] is True

@@ -90,7 +90,15 @@ def weekday(the_date: str) -> Union[str, None]:
 
     if fd:
         fp = p.parse(fd[0].isoformat())
-        return fp.day_of_week <= 4
+        return fp.day_of_week not in [0, 6]
+
+
+def weekend(the_date: str) -> Union[str, None]:
+    """
+    Helper function to output True/False to check if date given is a
+    weekend.
+    """
+    ...
 
 
 def day_of_week(date: str):

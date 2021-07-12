@@ -73,11 +73,12 @@ def test_differ_failing():
     assert test_dates is None
 
 
+# Make a fixture for this to loop through know weekdays.
 def test_weekday_passing():
     """
     Test that when given weekday True is outputted.
     """
-    test_date = weekday("07-07-2021")
+    test_date = weekday("07-09-2021")
     assert test_date is True
 
 
