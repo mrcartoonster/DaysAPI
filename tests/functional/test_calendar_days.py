@@ -138,3 +138,30 @@ def test_is_weekday_passing():
 
     # Then assert that is_weekday is True
     assert response.json()["is_weekday"] is True
+
+
+def test_is_weekend_passing():
+    """
+    Simple test for passing weekend.
+    """
+    # GIVEN a GET request to /calendar/is_weekend
+    response = client.get("/calendar/is_weekend", params={"date": "07-11-21"})
+
+    # THEN 200 is response
+    assert response.status_code == 200
+
+    # THEN assert that is_weekend is True
+    assert response.json()["is_weekend"] is True
+
+
+def test_is_weekend_failing():
+    """
+    Simple test for failing.
+    """
+    response = client.get("/calendar/is_weekend", params={"date": "7 j 28"})
+
+    assert response.status_code == 422
+
+    assert response.json() == {
+        "detail": "7 j 28 isn't a date that can be interepreted.",
+    }

@@ -98,7 +98,12 @@ def weekend(the_date: str) -> Union[str, None]:
     Helper function to output True/False to check if date given is a
     weekend.
     """
-    ...
+
+    fd = list(df.find_dates(the_date))
+
+    if fd:
+        fp = p.parse(fd[0].isoformat())
+        return fp.day_of_week in [0, 6]
 
 
 def day_of_week(date: str):

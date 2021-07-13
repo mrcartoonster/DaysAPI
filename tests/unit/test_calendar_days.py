@@ -2,7 +2,12 @@
 # Test for calenddar function helpers
 import pendulum as p
 
-from services.calendar.calendar_helpers import arithmetic, differ, weekday
+from services.calendar.calendar_helpers import (
+    arithmetic,
+    differ,
+    weekday,
+    weekend,
+)
 
 
 def test_arithmetic_add_passing():
@@ -88,4 +93,21 @@ def test_weekday_failing():
     returned.
     """
     test_date = weekday("2 j 22")
+    assert test_date is None
+
+
+def test_weekend_passing():
+    """
+    test functiono to ensure date pass when it's a weeknd.
+    """
+    test_date = weekend("07-11-21")
+    assert test_date is True
+
+
+def test_weekend_failing():
+    """
+    When an unparsable date's entered None is returned.
+    """
+
+    test_date = weekend("jul el 21")
     assert test_date is None

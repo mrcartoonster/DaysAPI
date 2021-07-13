@@ -4,13 +4,14 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
 from pendulum import timezones
 
-from models.calendar_models import Arithmetic, Diff, WeekDay
+from models.calendar_models import Arithmetic, Diff, WeekDay, WeekEnd
 from services.calendar.calendar_helpers import (
     arithmetic,
     day_of_week,
     differ,
     isoformatter,
     weekday,
+    weekend,
 )
 
 router = APIRouter(
@@ -158,6 +159,8 @@ async def difference(
     )
 
 
+# Both weekday and weekend have the same output.
+# We'll try and create a Depends for them.
 @router.get("/is_weekday", response_model=WeekDay)
 def is_weekday(
     date: str = Query(
@@ -184,5 +187,36 @@ def is_weekday(
         date_entered=date,
         isoformat=iso,
         is_weekday=wk,
+        day_of_week=dw,
+    )
+
+
+@router.get("/is_weekend", response_model=WeekEnd)
+async def is_weekend(
+    date: str = Query(
+        default=p.now().to_date_string(),
+        description="Date to check for weekend",
+    ),
+):
+    """
+    Endpoint will output True if date is pass is Saturday or Sunday.
+
+    False if it's a weekday.
+
+    """
+    if weekend(date) is None:
+        raise HTTPException(
+            status_code=422,
+            detail=f"{date} isn't a date that can be interepreted.",
+        )
+
+    wk = weekend(date)
+    iso = isoformatter(date)
+    dw = day_of_week(date)
+
+    return WeekEnd(
+        date_entered=date,
+        isoformat=iso,
+        is_weekend=wk,
         day_of_week=dw,
     )
