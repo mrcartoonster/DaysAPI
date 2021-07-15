@@ -4,13 +4,32 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
 from pendulum import timezones
 
-from models.calendar_models import Arithmetic, Diff, WeekDay
+from models.calendar_models import (
+    Arithmetic,
+    Diff,
+    FormatRequest,
+    FormatResponse,
+    WeekDay,
+    WeekEnd,
+)
 from services.calendar.calendar_helpers import (
     arithmetic,
+    atom_string,
+    cookie_string,
     day_of_week,
     differ,
+    iso_8601,
     isoformatter,
+    rfc_822,
+    rfc_850,
+    rfc_1036,
+    rfc_1123,
+    rfc_2822,
+    rfc_3339,
+    rss,
+    w3c,
     weekday,
+    weekend,
 )
 
 router = APIRouter(
@@ -159,7 +178,7 @@ async def difference(
 
 
 @router.get("/is_weekday", response_model=WeekDay)
-def is_weekday(
+async def is_weekday(
     date: str = Query(
         default=p.now().to_date_string(),
         description="Date to check for weekday.",
@@ -186,3 +205,126 @@ def is_weekday(
         is_weekday=wk,
         day_of_week=dw,
     )
+
+
+@router.get("/is_weekend", response_model=WeekEnd)
+async def is_weekend(
+    date: str = Query(
+        default=p.now().to_date_string(),
+        description="Checks if date given is a weekend.",
+    )
+):
+    """
+    Endpoint will return True if date falls on the weekend, Saturday or
+    Sunday.
+    """
+    if weekend(date) is None:
+        raise HTTPException(
+            status_code=422,
+            detail=f"{date} isn't a date that can be interepreted.",
+        )
+    wk = weekend(date)
+    iso = isoformatter(date)
+    dw = day_of_week(date)
+
+    return WeekEnd(
+        date_entered=date,
+        isoformat=iso,
+        is_weekend=wk,
+        day_of_week=dw,
+    )
+
+
+@router.post("/date_format", response_model=FormatResponse)
+async def date_format(date_format: FormatRequest):
+    """
+    Enter dates with the the format you'd want them returned in.
+    """
+
+    if date_format.dateform.atom_string:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=atom_string(date_format.dates),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.cookie_string:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=cookie_string(date_format.dates),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.iso_8601:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=iso_8601(date_format.dates),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.rfc_822:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_822(date_format.dates),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.rfc_850:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_850(date_format.dates),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.rfc_1036:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_1036(date_format.dates),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.rfc_1123:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_1123(date_format.dates),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.rfc_2822:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_2822(date_format.dates),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.rfc_3339:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_3339(date_format.dates),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.rss:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rss(date_format.dates),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.w3c:
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=w3c(date_format.dates),
+            time_zone=date_format.time_zone,
+        )

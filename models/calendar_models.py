@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # Response models for Calendar endpoints
+from enum import Enum
+
 import pendulum as p
 from pydantic import BaseModel, Field
 
@@ -130,3 +132,65 @@ class WeekDay(BaseModel):
         default="Monday",
         description="Day of week name of date entered.",
     )
+
+
+class WeekEnd(BaseModel):
+    """
+    JSON Schema Response Model for is_weekend endpoint.
+    """
+
+    date_entered: str = Field(
+        default=p.now().to_date_string(),
+        description="Entered formatted date of datestring.",
+    )
+    isoformat: str = Field(
+        default=p.now().to_iso8601_string(),
+        description=("Date in ISO-8601 format."),
+    )
+    is_weekend: bool = Field(
+        default=True,
+        description="True if date given falls on Saturday or Sunday.",
+    )
+    day_of_week: str = Field(
+        default="Saturday",
+        description="Day of weekday named entered.",
+    )
+
+
+class DateForm(str, Enum):
+    """
+    This is an enumartion of date formats.
+    """
+
+    atom_string = "atom_string"
+    cookie_string = "cookie_string"
+    iso_8601 = "iso_8601"
+    rfc_822 = "rfc_822"
+    rfc_850 = "rfc_850"
+    rfc_1036 = "rfc_1036"
+    rfc_1123 = "rfc_1123"
+    rfc_2822 = "rfc_2822"
+    rfc_3339 = "rfc_3339"
+    rss = "rss"
+    w3c = "w3c"
+
+
+class FormatRequest(BaseModel):
+    """
+    Request Body for POST for date_format endpoint.
+    """
+
+    dateform: DateForm = DateForm.iso_8601
+    dates: str = p.now().to_iso8601_string()
+    time_zone: str = "UTC"
+
+
+class FormatResponse(BaseModel):
+    """
+    JSON Schema for date format Response model.
+    """
+
+    entered_dates: str = ""
+    format_selection: str = "iso_8601"
+    formatted_list: list[str] = [p.now().to_iso8601_string()]
+    time_zone: str = "UTC"
