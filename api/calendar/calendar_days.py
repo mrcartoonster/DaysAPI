@@ -4,12 +4,34 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
 from pendulum import timezones
 
+<<<<<<< HEAD
 from models.calendar_models import Arithmetic, Diff, WeekDay, WeekEnd
+=======
+from models.calendar_models import (
+    Arithmetic,
+    Diff,
+    FormatRequest,
+    FormatResponse,
+    WeekDay,
+    WeekEnd,
+)
+>>>>>>> DR-13-thirteenth
 from services.calendar.calendar_helpers import (
     arithmetic,
+    atom_string,
+    cookie_string,
     day_of_week,
     differ,
+    iso_8601,
     isoformatter,
+    rfc_822,
+    rfc_850,
+    rfc_1036,
+    rfc_1123,
+    rfc_2822,
+    rfc_3339,
+    rss,
+    w3c,
     weekday,
     weekend,
 )
@@ -162,7 +184,7 @@ async def difference(
 # Both weekday and weekend have the same output.
 # We'll try and create a Depends for them.
 @router.get("/is_weekday", response_model=WeekDay)
-def is_weekday(
+async def is_weekday(
     date: str = Query(
         default=p.now().to_date_string(),
         description="Date to check for weekday.",
@@ -195,6 +217,7 @@ def is_weekday(
 async def is_weekend(
     date: str = Query(
         default=p.now().to_date_string(),
+<<<<<<< HEAD
         description="Date to check for weekend",
     ),
 ):
@@ -203,13 +226,24 @@ async def is_weekend(
 
     False if it's a weekday.
 
+=======
+        description="Checks if date given is a weekend.",
+    )
+):
+    """
+    Endpoint will return True if date falls on the weekend, Saturday or
+    Sunday.
+>>>>>>> DR-13-thirteenth
     """
     if weekend(date) is None:
         raise HTTPException(
             status_code=422,
             detail=f"{date} isn't a date that can be interepreted.",
         )
+<<<<<<< HEAD
 
+=======
+>>>>>>> DR-13-thirteenth
     wk = weekend(date)
     iso = isoformatter(date)
     dw = day_of_week(date)
@@ -220,3 +254,146 @@ async def is_weekend(
         is_weekend=wk,
         day_of_week=dw,
     )
+<<<<<<< HEAD
+=======
+
+
+@router.post("/date_format", response_model=FormatResponse)
+async def date_format(date_format: FormatRequest):
+    """
+    Enter dates with the the format you'd want them returned in.
+
+    You can enter text that contains the date(s) and this endpoint
+    will try to parse out the date(s) and return a list of just the
+    date(s) in requested format chosen. Results may very.
+    May give extra dates or less dates.
+
+    The formats are:
+
+    * **Cookie String**:
+        * `'Thursday, 25-Dec-1975 14:15:16 EST'`
+    * **Atom Strin**g:
+        * `'1975-12-25T14:15:16-05:00'`
+    * **ISO-8601**(default):
+        * `'1975-12-25T14:15:16-0500'`
+    * **RFC-822**:
+        * `'Thu, 25 Dec 75 14:15:16 -0500'`
+    * **RFC-850**:
+        * `'Thursday, 25-Dec-75 14:15:16 EST'`
+    * **RFC-1036**:
+        * `'Thu, 25 Dec 75 14:15:16 -0500'`
+    * **RFC-1123**:
+        * `'Thu, 25 Dec 1975 14:15:16 -0500'`
+    * **RFC-2822**:
+        * `'Thu, 25 Dec 1975 14:15:16 -0500'`
+    * **RFC-3339**:
+        * `'1975-12-25T14:15:16-05:00'`
+    * **RSS**:
+        * `'Thu, 25 Dec 1975 14:15:16 -0500'`
+    * **W3C**:
+        * `'1975-12-25T14:15:16-05:00'`
+
+    """
+    if date_format.time_zone not in timezones:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"'{date_format.time_zone}' "
+                "is not a time zone we have on file.",
+            ),
+        )
+
+    if date_format.dateform.value == "atom_string":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=atom_string(
+                date_format.dates,
+                date_format.time_zone,
+            ),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.value == "cookie_string":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=cookie_string(
+                date_format.dates,
+                date_format.time_zone,
+            ),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.value == "iso_8601":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=iso_8601(date_format.dates, date_format.time_zone),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.value == "rfc_822":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_822(date_format.dates, date_format.time_zone),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.value == "rfc_850":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_850(date_format.dates, date_format.time_zone),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.value == "rfc_1036":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_1036(date_format.dates, date_format.time_zone),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.value == "rfc_1123":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_1123(date_format.dates, date_format.time_zone),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.value == "rfc_2822":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_2822(date_format.dates, date_format.time_zone),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.value == "rfc_3339":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rfc_3339(date_format.dates, date_format.time_zone),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.value == "rss":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=rss(date_format.dates, date_format.time_zone),
+            time_zone=date_format.time_zone,
+        )
+
+    if date_format.dateform.value == "w3c":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=w3c(date_format.dates, date_format.time_zone),
+            time_zone=date_format.time_zone,
+        )
+>>>>>>> DR-13-thirteenth
