@@ -180,9 +180,15 @@ class FormatRequest(BaseModel):
     Request Body for POST for date_format endpoint.
     """
 
-    dateform: DateForm = DateForm.iso_8601
-    dates: str = p.now().to_iso8601_string()
-    time_zone: str = "UTC"
+    dateform: DateForm = Field(
+        default=DateForm.iso_8601,
+        description="Date Form selected. Default is ISO-8601",
+    )
+    dates: str = Field(
+        default=p.now().to_iso8601_string(),
+        description="Formatted list of entered date or dates.",
+    )
+    time_zone: str = Field(default="UTC", description="Selected time zone.")
 
 
 class FormatResponse(BaseModel):
@@ -190,7 +196,16 @@ class FormatResponse(BaseModel):
     JSON Schema for date format Response model.
     """
 
-    entered_dates: str = ""
-    format_selection: str = "iso_8601"
-    formatted_list: list[str] = [p.now().to_iso8601_string()]
-    time_zone: str = "UTC"
+    entered_dates: str = Field(
+        default="",
+        description="Entered dates or date.",
+    )
+    format_selection: str = Field(
+        default="cookie_string",
+        description="Format date string selected. Default is ISO-8601.",
+    )
+    formatted_list: list[str] = Field(
+        default=[p.now().to_date_string()],
+        description="Return of formatted date or dates.",
+    )
+    time_zone: str = Field(default="UTC", description="Selected timezone")

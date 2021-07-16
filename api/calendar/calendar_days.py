@@ -240,12 +240,23 @@ async def date_format(date_format: FormatRequest):
     """
     Enter dates with the the format you'd want them returned in.
     """
+    if date_format.time_zone not in timezones:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"'{date_format.time_zone}' "
+                "is not a time zone we have on file.",
+            ),
+        )
 
     if date_format.dateform.atom_string:
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
-            formatted_list=atom_string(date_format.dates),
+            formatted_list=atom_string(
+                date_format.dates,
+                date_format.time_zone,
+            ),
             time_zone=date_format.time_zone,
         )
 
@@ -253,7 +264,10 @@ async def date_format(date_format: FormatRequest):
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
-            formatted_list=cookie_string(date_format.dates),
+            formatted_list=cookie_string(
+                date_format.dates,
+                date_format.time_zone,
+            ),
             time_zone=date_format.time_zone,
         )
 
@@ -261,7 +275,7 @@ async def date_format(date_format: FormatRequest):
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
-            formatted_list=iso_8601(date_format.dates),
+            formatted_list=iso_8601(date_format.dates, date_format.time_zone),
             time_zone=date_format.time_zone,
         )
 
@@ -269,7 +283,7 @@ async def date_format(date_format: FormatRequest):
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
-            formatted_list=rfc_822(date_format.dates),
+            formatted_list=rfc_822(date_format.dates, date_format.time_zone),
             time_zone=date_format.time_zone,
         )
 
@@ -277,7 +291,7 @@ async def date_format(date_format: FormatRequest):
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
-            formatted_list=rfc_850(date_format.dates),
+            formatted_list=rfc_850(date_format.dates, date_format.time_zone),
             time_zone=date_format.time_zone,
         )
 
@@ -285,7 +299,7 @@ async def date_format(date_format: FormatRequest):
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
-            formatted_list=rfc_1036(date_format.dates),
+            formatted_list=rfc_1036(date_format.dates, date_format.time_zone),
             time_zone=date_format.time_zone,
         )
 
@@ -293,7 +307,7 @@ async def date_format(date_format: FormatRequest):
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
-            formatted_list=rfc_1123(date_format.dates),
+            formatted_list=rfc_1123(date_format.dates, date_format.time_zone),
             time_zone=date_format.time_zone,
         )
 
@@ -301,7 +315,7 @@ async def date_format(date_format: FormatRequest):
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
-            formatted_list=rfc_2822(date_format.dates),
+            formatted_list=rfc_2822(date_format.dates, date_format.time_zone),
             time_zone=date_format.time_zone,
         )
 
@@ -309,7 +323,7 @@ async def date_format(date_format: FormatRequest):
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
-            formatted_list=rfc_3339(date_format.dates),
+            formatted_list=rfc_3339(date_format.dates, date_format.time_zone),
             time_zone=date_format.time_zone,
         )
 
@@ -317,14 +331,13 @@ async def date_format(date_format: FormatRequest):
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
-            formatted_list=rss(date_format.dates),
+            formatted_list=rss(date_format.dates, date_format.time_zone),
             time_zone=date_format.time_zone,
         )
 
-    if date_format.dateform.w3c:
-        return FormatResponse(
-            entered_dates=date_format.dates,
-            format_selection=date_format.dateform,
-            formatted_list=w3c(date_format.dates),
-            time_zone=date_format.time_zone,
-        )
+    return FormatResponse(
+        entered_dates=date_format.dates,
+        format_selection=date_format.dateform,
+        formatted_list=w3c(date_format.dates, date_format.time_zone),
+        time_zone=date_format.time_zone,
+    )
