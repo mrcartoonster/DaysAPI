@@ -62,7 +62,7 @@ class PeriodTwo(BaseModel):
     formatted_date_two: str = Field(
         p.now().add(months=2).to_iso8601_string(),
         title="Date two formatted",
-        description="Date entered formatted in ISO-8601 format.",
+        description="Date entered formatted in ISO-8601 format",
     )
 
 
@@ -123,7 +123,10 @@ class WeekDay(BaseModel):
     )
     is_weekday: bool = Field(
         default=True,
-        description=("True if date is a weekday: Monday through Friday."),
+        description=(
+            "True if date entered is a week day and False if it isn't"
+            " As in if day is Saturday or Sunday, `false` will be returned"
+        ),
     )
     day_of_week: str = Field(
         default="Monday",
@@ -133,31 +136,11 @@ class WeekDay(BaseModel):
 
 class WeekEnd(BaseModel):
     """
-<<<<<<< HEAD
-    JSON Schema Response Model for is_weeknd endpoint.
-=======
     JSON Schema Response Model for is_weekend endpoint.
->>>>>>> DR-13-thirteenth
     """
 
     date_entered: str = Field(
         default=p.now().to_date_string(),
-<<<<<<< HEAD
-        description="Entered format of datestring.",
-    )
-    isoformat: str = Field(
-        default=p.now().to_iso8601_string(),
-        description="ISO-8601 format of datestring.",
-    )
-    is_weekend: bool = Field(
-        default=True,
-        description="True if date entered is Saturday or Sunday.",
-    )
-    day_of_week: str = Field(
-        default="Monday",
-        description="Day name of date entered.",
-    )
-=======
         description="Entered formatted date of datestring.",
     )
     isoformat: str = Field(
@@ -226,4 +209,3 @@ class FormatResponse(BaseModel):
         description="Return of formatted date or dates.",
     )
     time_zone: str = Field(default="UTC", description="Selected timezone")
->>>>>>> DR-13-thirteenth

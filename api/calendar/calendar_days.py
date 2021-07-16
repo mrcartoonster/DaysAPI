@@ -4,9 +4,6 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
 from pendulum import timezones
 
-<<<<<<< HEAD
-from models.calendar_models import Arithmetic, Diff, WeekDay, WeekEnd
-=======
 from models.calendar_models import (
     Arithmetic,
     Diff,
@@ -15,7 +12,6 @@ from models.calendar_models import (
     WeekDay,
     WeekEnd,
 )
->>>>>>> DR-13-thirteenth
 from services.calendar.calendar_helpers import (
     arithmetic,
     atom_string,
@@ -181,8 +177,6 @@ async def difference(
     )
 
 
-# Both weekday and weekend have the same output.
-# We'll try and create a Depends for them.
 @router.get("/is_weekday", response_model=WeekDay)
 async def is_weekday(
     date: str = Query(
@@ -217,33 +211,18 @@ async def is_weekday(
 async def is_weekend(
     date: str = Query(
         default=p.now().to_date_string(),
-<<<<<<< HEAD
-        description="Date to check for weekend",
-    ),
-):
-    """
-    Endpoint will output True if date is pass is Saturday or Sunday.
-
-    False if it's a weekday.
-
-=======
         description="Checks if date given is a weekend.",
     )
 ):
     """
     Endpoint will return True if date falls on the weekend, Saturday or
     Sunday.
->>>>>>> DR-13-thirteenth
     """
     if weekend(date) is None:
         raise HTTPException(
             status_code=422,
             detail=f"{date} isn't a date that can be interepreted.",
         )
-<<<<<<< HEAD
-
-=======
->>>>>>> DR-13-thirteenth
     wk = weekend(date)
     iso = isoformatter(date)
     dw = day_of_week(date)
@@ -254,8 +233,6 @@ async def is_weekend(
         is_weekend=wk,
         day_of_week=dw,
     )
-<<<<<<< HEAD
-=======
 
 
 @router.post("/date_format", response_model=FormatResponse)
@@ -396,4 +373,3 @@ async def date_format(date_format: FormatRequest):
             formatted_list=w3c(date_format.dates, date_format.time_zone),
             time_zone=date_format.time_zone,
         )
->>>>>>> DR-13-thirteenth

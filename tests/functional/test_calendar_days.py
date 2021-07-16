@@ -140,32 +140,6 @@ def test_is_weekday_passing():
     assert response.json()["is_weekday"] is True
 
 
-<<<<<<< HEAD
-def test_is_weekend_passing():
-    """
-    Simple test for passing weekend.
-    """
-    # GIVEN a GET request to /calendar/is_weekend
-    response = client.get("/calendar/is_weekend", params={"date": "07-11-21"})
-
-    # THEN 200 is response
-    assert response.status_code == 200
-
-    # THEN assert that is_weekend is True
-    assert response.json()["is_weekend"] is True
-
-
-def test_is_weekend_failing():
-    """
-    Simple test for failing.
-    """
-    response = client.get("/calendar/is_weekend", params={"date": "7 j 28"})
-
-    assert response.status_code == 422
-
-    assert response.json() == {
-        "detail": "7 j 28 isn't a date that can be interepreted.",
-=======
 # This will be expanded with fixtures
 def test_date_format_passing():
     """
@@ -183,5 +157,4 @@ def test_date_format_passing():
         "format_selection": "w3c",
         "formatted_list": ["2021-07-21T00:00:00-10:00"],
         "time_zone": "US/Hawaii",
->>>>>>> DR-13-thirteenth
     }
