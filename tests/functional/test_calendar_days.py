@@ -138,3 +138,23 @@ def test_is_weekday_passing():
 
     # Then assert that is_weekday is True
     assert response.json()["is_weekday"] is True
+
+
+# This will be expanded with fixtures
+def test_date_format_passing():
+    """
+    Passing test for date format.
+    """
+    # GEVEN POST requet to /calendar/date_format.
+    response = client.post(
+        "/calendar/date_format",
+        json={"dateform": "w3c", "dates": "7-21-21", "time_zone": "US/Hawaii"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "entered_dates": "7-21-21",
+        "format_selection": "w3c",
+        "formatted_list": ["2021-07-21T00:00:00-10:00"],
+        "time_zone": "US/Hawaii",
+    }

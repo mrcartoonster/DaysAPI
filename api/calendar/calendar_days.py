@@ -239,6 +239,37 @@ async def is_weekend(
 async def date_format(date_format: FormatRequest):
     """
     Enter dates with the the format you'd want them returned in.
+
+    You can enter text that contains the date(s) and this endpoint
+    will try to parse out the date(s) and return a list of just the
+    date(s) in requested format chosen. Results may very.
+    May give extra dates or less dates.
+
+    The formats are:
+
+    * **Cookie String**:
+        * `'Thursday, 25-Dec-1975 14:15:16 EST'`
+    * **Atom Strin**g:
+        * `'1975-12-25T14:15:16-05:00'`
+    * **ISO-8601**(default):
+        * `'1975-12-25T14:15:16-0500'`
+    * **RFC-822**:
+        * `'Thu, 25 Dec 75 14:15:16 -0500'`
+    * **RFC-850**:
+        * `'Thursday, 25-Dec-75 14:15:16 EST'`
+    * **RFC-1036**:
+        * `'Thu, 25 Dec 75 14:15:16 -0500'`
+    * **RFC-1123**:
+        * `'Thu, 25 Dec 1975 14:15:16 -0500'`
+    * **RFC-2822**:
+        * `'Thu, 25 Dec 1975 14:15:16 -0500'`
+    * **RFC-3339**:
+        * `'1975-12-25T14:15:16-05:00'`
+    * **RSS**:
+        * `'Thu, 25 Dec 1975 14:15:16 -0500'`
+    * **W3C**:
+        * `'1975-12-25T14:15:16-05:00'`
+
     """
     if date_format.time_zone not in timezones:
         raise HTTPException(
@@ -249,7 +280,7 @@ async def date_format(date_format: FormatRequest):
             ),
         )
 
-    if date_format.dateform.atom_string:
+    if date_format.dateform.value == "atom_string":
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
@@ -260,7 +291,7 @@ async def date_format(date_format: FormatRequest):
             time_zone=date_format.time_zone,
         )
 
-    if date_format.dateform.cookie_string:
+    if date_format.dateform.value == "cookie_string":
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
@@ -271,7 +302,7 @@ async def date_format(date_format: FormatRequest):
             time_zone=date_format.time_zone,
         )
 
-    if date_format.dateform.iso_8601:
+    if date_format.dateform.value == "iso_8601":
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
@@ -279,7 +310,7 @@ async def date_format(date_format: FormatRequest):
             time_zone=date_format.time_zone,
         )
 
-    if date_format.dateform.rfc_822:
+    if date_format.dateform.value == "rfc_822":
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
@@ -287,7 +318,7 @@ async def date_format(date_format: FormatRequest):
             time_zone=date_format.time_zone,
         )
 
-    if date_format.dateform.rfc_850:
+    if date_format.dateform.value == "rfc_850":
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
@@ -295,7 +326,7 @@ async def date_format(date_format: FormatRequest):
             time_zone=date_format.time_zone,
         )
 
-    if date_format.dateform.rfc_1036:
+    if date_format.dateform.value == "rfc_1036":
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
@@ -303,7 +334,7 @@ async def date_format(date_format: FormatRequest):
             time_zone=date_format.time_zone,
         )
 
-    if date_format.dateform.rfc_1123:
+    if date_format.dateform.value == "rfc_1123":
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
@@ -311,7 +342,7 @@ async def date_format(date_format: FormatRequest):
             time_zone=date_format.time_zone,
         )
 
-    if date_format.dateform.rfc_2822:
+    if date_format.dateform.value == "rfc_2822":
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
@@ -319,7 +350,7 @@ async def date_format(date_format: FormatRequest):
             time_zone=date_format.time_zone,
         )
 
-    if date_format.dateform.rfc_3339:
+    if date_format.dateform.value == "rfc_3339":
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
@@ -327,7 +358,7 @@ async def date_format(date_format: FormatRequest):
             time_zone=date_format.time_zone,
         )
 
-    if date_format.dateform.rss:
+    if date_format.dateform.value == "rss":
         return FormatResponse(
             entered_dates=date_format.dates,
             format_selection=date_format.dateform,
@@ -335,9 +366,10 @@ async def date_format(date_format: FormatRequest):
             time_zone=date_format.time_zone,
         )
 
-    return FormatResponse(
-        entered_dates=date_format.dates,
-        format_selection=date_format.dateform,
-        formatted_list=w3c(date_format.dates, date_format.time_zone),
-        time_zone=date_format.time_zone,
-    )
+    if date_format.dateform.value == "w3c":
+        return FormatResponse(
+            entered_dates=date_format.dates,
+            format_selection=date_format.dateform,
+            formatted_list=w3c(date_format.dates, date_format.time_zone),
+            time_zone=date_format.time_zone,
+        )
