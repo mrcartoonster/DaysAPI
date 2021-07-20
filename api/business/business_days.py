@@ -2,13 +2,13 @@
 from typing import Optional
 
 import pendulum as p
-from fastapi import APIRouter, HTTPException, Path, Query
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import ORJSONResponse
 
 from models.business_models import Day, Delta
 from services.business.working_helpers import (
     delta_working,
-    holidays,
+    to_day_string,
     working_days,
 )
 
@@ -50,7 +50,12 @@ async def business_day(
         )
     working_date = working_days(date=date, days=days)
 
-    return Day(date=date, days=days, enddate=working_date)
+    return Day(
+        date_entered=date,
+        interpreted_date=to_day_string(date),
+        days=days,
+        enddate=working_date,
+    )
 
 
 @router.get("/delta", response_model=Delta)
@@ -83,32 +88,8 @@ async def business_delta(
     delta = delta_working(first_date, second_date)
     return Delta(
         first_date=first_date,
+        first_interpreted_date=to_day_string(first_date),
         second_date=second_date,
+        second_interpreted_date=to_day_string(second_date),
         business_days=delta,
     )
-
-
-@router.get("/holidays/{year}")
-async def business_holidays(
-    year: int = Path(
-        ...,
-        description=(
-            "Return a list of US holidays for given year."
-            " Just enter 4 digit year: 1999."
-        ),
-    )
-):
-    """
-    This is a list of holidays in the US.
-    """
-    if year >= 9999:
-        raise HTTPException(
-            status_code=422,
-            detail=(
-                "Year cannot be greater than or equal to 9999. Can only go"
-                " up to the year 9998. Yeah, there is no 'Party like it's"
-                " 9999' in this API 😭"
-            ),
-        )
-    holiday_list = holidays(year=year)
-    return {"holidays": holiday_list}

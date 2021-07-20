@@ -12,6 +12,7 @@ from models.calendar_models import (
     WeekDay,
     WeekEnd,
 )
+from services.business.working_helpers import to_day_string
 from services.calendar.calendar_helpers import (
     arithmetic,
     atom_string,
@@ -104,6 +105,7 @@ async def calendar_arithmetic(
     # Returning Response Model
     return Arithmetic(
         date_entered=date,
+        interpreted_date=to_day_string(date),
         tz=tz,
         years=years,
         months=months,

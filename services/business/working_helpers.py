@@ -51,3 +51,13 @@ def holidays(year: int = p.now().year):
         key.strftime(dt_fmt): value for key, value in holiday_list
     }
     return holiday_formatted
+
+
+def to_day_string(the_date: str):
+    """
+    Helper function to return human readable date.
+    """
+    fd = list(df.find_dates(the_date))
+    fp = p.parse(fd[0].isoformat())
+
+    return fp.to_cookie_string()

@@ -15,6 +15,10 @@ class Arithmetic(BaseModel):
         default=p.now().to_day_datetime_string(),
         description="Date enterd to count days from.",
     )
+    interpreted_date: str = Field(
+        default=p.now().to_cookie_string(),
+        description="Interpreted date entered in human readable form.",
+    )
     tz: str = Field(
         default="UTC",
         title="Time Zone",
@@ -38,14 +42,14 @@ class PeriodOne(BaseModel):
     """
 
     date_one: str = Field(
-        p.now().to_datetime_string(),
+        default=p.now().to_datetime_string(),
         title="Date One",
         description="First date entered",
     )
     formatted_date_one: str = Field(
-        p.now().to_iso8601_string(),
+        default=p.now().to_iso8601_string(),
         title="Date One formatted",
-        description="Date One entered formatted in ISO-8601 format",
+        description="Formatted for Humans.",
     )
 
 
@@ -55,14 +59,14 @@ class PeriodTwo(BaseModel):
     """
 
     date_two: str = Field(
-        p.now().add(months=2).to_datetime_string(),
+        default=p.now().add(months=2).to_datetime_string(),
         title="Date Two",
-        description="Second date entred",
+        description="Second date entred.",
     )
     formatted_date_two: str = Field(
-        p.now().add(months=2).to_iso8601_string(),
+        default=p.now().add(months=2).to_iso8601_string(),
         title="Date two formatted",
-        description="Date entered formatted in ISO-8601 format",
+        description="Formatted for humans.",
     )
 
 
