@@ -18,6 +18,10 @@ holiday_dict = {
     "Friday, December 31 2021": "New Years Day (Observed)",
 }
 
+# fail_days = []
+fail_days = ["1-1-21", "2-2-2021"]
+fail_tz = ["US/North", "US/Vox"]
+
 
 @pytest.fixture()
 def holidaysdict():
@@ -26,3 +30,13 @@ def holidaysdict():
     holidays.
     """
     return holiday_dict
+
+
+@pytest.fixture(params=fail_days)
+def failed_days(request):
+    return request.param
+
+
+@pytest.fixture(params=fail_tz)
+def failed_tz(request):
+    return request.param

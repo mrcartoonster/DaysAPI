@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Test for calenddar function helpers
 import pendulum as p
+import pytest
 
 from services.calendar.calendar_helpers import (
     arithmetic,
@@ -10,11 +11,12 @@ from services.calendar.calendar_helpers import (
 )
 
 
-def test_arithmetic_add_passing():
+@pytest.mark.parametrize("date", ["1-1-21"])
+def test_arithmetic_add_passing(date):
     """
     Test helper addition functionality.
     """
-    test_date = arithmetic(date="1-1-21")
+    test_date = arithmetic(date=date)
     assert test_date == "2021-01-09 00:00:00"
 
 
@@ -26,13 +28,13 @@ def test_arithmetic_subtraction_passing():
     assert test_date == "2020-12-24 00:00:00"
 
 
-def test_arithmetic_tz_failing():
+def test_arithmetic_tz_failing(failed_days, failed_tz):
     """
     Confirm that when an incorrect timezone is entered, you get the
     error printed.
     """
-    test_date = arithmetic("1-1-21", tz="US/North")
-    assert test_date == "US/North is not a timezone we have on file."
+    test_date = arithmetic(date=failed_days, tz=failed_tz)
+    assert test_date == f"{failed_tz} is not a timezone we have on file."
 
 
 def test_arithmetic_datetime_failing():
