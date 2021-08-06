@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import pytest
 from services.business.working_helpers import (
     delta_working,
     holidays,
