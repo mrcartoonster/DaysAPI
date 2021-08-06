@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 # Location of fixtures and variables
 import pytest
+from mimesis import Datetime
+from workalendar.usa import UnitedStates
+
+us = UnitedStates()
+d = Datetime()
 
 holiday_dict = {
     "Friday, January 01 2021": "New year",
@@ -22,6 +27,12 @@ holiday_dict = {
 fail_days = ["1-1-21", "2-2-2021"]
 fail_tz = ["US/North", "US/Vox"]
 
+mm = [d.date() for _ in range(12)]
+
+random_date = [us.add_working_days(_, 8).isoformat() for _ in mm]
+
+wrong_dates = ["1-j-2", "35 desx", "02-j5-nx"]
+
 
 @pytest.fixture()
 def holidaysdict():
@@ -39,4 +50,14 @@ def failed_days(request):
 
 @pytest.fixture(params=fail_tz)
 def failed_tz(request):
+    return request.param
+
+
+@pytest.fixture(params=random_date)
+def passing_days(request):
+    return request.param
+
+
+@pytest.fixture(params=wrong_dates)
+def wrong_days(request):
     return request.param

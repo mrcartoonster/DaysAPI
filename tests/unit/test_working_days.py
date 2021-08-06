@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pytest
 from services.business.working_helpers import (
     delta_working,
     holidays,
@@ -6,19 +7,19 @@ from services.business.working_helpers import (
 )
 
 
-def test_working_days_helper_function_passing():
+def test_working_days_helper_function_passing(passing_days):
     """
     Passing working days function.
     """
-    test_date = working_days("2021-06-29", 8)
-    assert test_date == "2021-07-12"
+    test_date = working_days(passing_days)
+    assert test_date is not None
 
 
-def test_working_days_helper_function_failing():
+def test_working_days_helper_function_failing(wrong_days):
     """
     Test empty list is returned.
     """
-    test_date = working_days("1 j 2021", 5)
+    test_date = working_days(wrong_days)
     assert test_date is None
 
 
