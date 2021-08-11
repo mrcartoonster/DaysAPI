@@ -48,7 +48,7 @@ def test_arithmetic_datetime_failing():
     FastAPI's HTTPException will be able to catch it.
 
     """
-    test_date = arithmetic("2, j 2011")
+    test_date = arithmetic("2, j 22")
     assert test_date is None
 
 

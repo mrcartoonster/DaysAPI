@@ -7,6 +7,7 @@ schemathesis.fixups.install(["fast_api"])
 schema = schemathesis.from_uri("http://127.0.0.1:8900/openapi.json")
 
 
+@pytest.mark.skip(reason="Need to learn Schemathesis.")
 @pytest.mark.days
 @schema.parametrize(endpoint="/business/days")
 @settings(max_examples=100)
