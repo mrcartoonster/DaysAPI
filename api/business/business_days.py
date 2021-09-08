@@ -3,7 +3,6 @@ from typing import Optional
 
 import pendulum as p
 from fastapi import APIRouter, HTTPException, Query
-from fastapi.responses import ORJSONResponse
 
 from models.business_models import Day, Delta
 from services.business.working_helpers import (
@@ -12,9 +11,12 @@ from services.business.working_helpers import (
     working_days,
 )
 
+# from fastapi.responses import ORJSONResponse
+
+
 router = APIRouter(
     prefix="/business",
-    default_response_class=ORJSONResponse,
+    # default_response_class=ORJSONResponse,
 )
 
 

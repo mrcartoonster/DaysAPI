@@ -6,11 +6,10 @@ authors = ["Mr.Nobody <mrcartoonster@yahoo.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-fastapi = "^0.65.2"
+fastapi = "^0.68.1"
 pendulum = "^2.1.2"
 datefinder = "^0.7.1"
 workalendar = "^15.3.0"
-orjson = "^3.5.3"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.6b0", allow-prereleases = true}
