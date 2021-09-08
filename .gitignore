@@ -4,6 +4,7 @@
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
+*.deta
 *.hypothesis
 *.vscode
 __pycache__/
