@@ -4,7 +4,6 @@ fastapi==0.68.1
 jplephem==2.16
 lunardate==0.2.0
 numpy==1.21.1
-orjson==3.6.3
 pendulum==2.1.2
 pycalverter==1.6.1
 pydantic==1.8.2

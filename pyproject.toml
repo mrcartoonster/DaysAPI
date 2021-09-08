@@ -10,7 +10,6 @@ fastapi = "^0.68.1"
 pendulum = "^2.1.2"
 datefinder = "^0.7.1"
 workalendar = "^15.3.0"
-orjson = "^3.6.3"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.6b0", allow-prereleases = true}
