@@ -1,27 +1,22 @@
-asgiref==3.4.1; python_version >= "3.6"
-certifi==2021.5.30; python_version >= "3.6"
-click==7.1.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+certifi==2021.5.30
 datefinder==0.7.1
-fastapi==0.65.3; python_version >= "3.6"
-h11==0.12.0; python_version >= "3.6"
-jplephem==2.16; python_version >= "3.6"
-lunardate==0.2.0; python_version >= "3.6"
-numpy==1.21.1; python_version >= "3.7"
-orjson==3.6.1; python_version >= "3.6"
-pendulum==2.1.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
-pycalverter==1.6.1; python_version >= "3.6"
-pydantic==1.8.2; python_full_version >= "3.6.1" and python_version >= "3.6"
-pyluach==1.3.0; python_version >= "3.6"
-python-dateutil==2.8.2; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
+fastapi==0.68.1
+jplephem==2.16
+lunardate==0.2.0
+numpy==1.21.1
+pendulum==2.1.2
+pycalverter==1.6.1
+pydantic==1.8.2
+pyluach==1.3.0
+python-dateutil==2.8.2
 pytz==2021.1
-pytzdata==2020.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
-regex==2021.8.3
-sgp4==2.20; python_version >= "3.6"
-six==1.16.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
-skyfield==1.39; python_version >= "3.6"
-skyfield-data==3.0.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version < "4" and python_version >= "3.6"
-starlette==0.14.2; python_version >= "3.6"
-typing-extensions==3.10.0.0; python_full_version >= "3.6.1" and python_version >= "3.6"
-tzdata==2021.1; platform_system == "Windows" and python_version >= "3.6"
-uvicorn==0.14.0
-workalendar==15.4.0; python_version >= "3.6"
+pytzdata==2020.1
+regex==2021.8.28
+sgp4==2.20
+six==1.16.0
+skyfield==1.39
+skyfield-data==3.0.0
+starlette==0.14.2
+typing-extensions==3.10.0.2
+tzdata==2021.1
+workalendar==15.4.0
