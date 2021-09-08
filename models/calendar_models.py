@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Response models for Calendar endpoints
 from enum import Enum
+from typing import List
 
 import pendulum as p
 from pydantic import BaseModel, Field
@@ -206,10 +207,10 @@ class FormatResponse(BaseModel):
     )
     format_selection: str = Field(
         default="cookie_string",
-        # description="Format date string selected. Default is ISO-8601.",
+        description="Format date string selected. Default is ISO-8601.",
     )
-    formatted_list: list[str] = Field(
+    formatted_list: List[str] = Field(
         default=[p.now().to_date_string()],
-        # description="Return of formatted date or dates.",
+        description="Return of formatted date or dates.",
     )
     time_zone: str = Field(default="UTC", description="Selected timezone")
