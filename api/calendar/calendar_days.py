@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import pendulum as p
 from fastapi import APIRouter, HTTPException, Query
-
-# from fastapi.responses import ORJSONResponse
+from fastapi.responses import ORJSONResponse
 from pendulum import timezones
 
 from models.calendar_models import (
@@ -36,7 +35,7 @@ from services.calendar.calendar_helpers import (
 
 router = APIRouter(
     prefix="/calendar",
-    # default_response_class=ORJSONResponse,
+    default_response_class=ORJSONResponse,
 )
 
 
