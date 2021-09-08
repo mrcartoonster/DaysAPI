@@ -206,10 +206,10 @@ class FormatResponse(BaseModel):
     )
     format_selection: str = Field(
         default="cookie_string",
-        description="Format date string selected. Default is ISO-8601.",
+        # description="Format date string selected. Default is ISO-8601.",
     )
     formatted_list: list[str] = Field(
         default=[p.now().to_date_string()],
-        description="Return of formatted date or dates.",
+        # description="Return of formatted date or dates.",
     )
     time_zone: str = Field(default="UTC", description="Selected timezone")
