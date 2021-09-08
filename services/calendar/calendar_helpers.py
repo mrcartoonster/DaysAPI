@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Union
+from typing import List, Union
 
 import datefinder as df
 import pendulum as p
@@ -117,7 +117,7 @@ def day_of_week(date: str):
 
 
 # Format functions
-def rfc_822(date: str, tz: str = "UTC") -> list[str]:
+def rfc_822(date: str, tz: str = "UTC") -> List[str]:
     """
     RFC-822 format.
     """
@@ -126,55 +126,55 @@ def rfc_822(date: str, tz: str = "UTC") -> list[str]:
     return [p.parse(_.isoformat(), tz=tz).to_rfc822_string() for _ in fd]
 
 
-def rfc_850(date: str, tz: str = "UTC") -> list[str]:
+def rfc_850(date: str, tz: str = "UTC") -> List[str]:
     d = date.replace(" ", " a ")
     fd = list(df.find_dates(d))
     return [p.parse(_.isoformat(), tz=tz).to_rfc850_string() for _ in fd]
 
 
-def rss(date: str, tz: str = "UTC") -> list[str]:
+def rss(date: str, tz: str = "UTC") -> List[str]:
     d = date.replace(" ", " a ")
     fd = list(df.find_dates(d))
     return [p.parse(_.isoformat(), tz=tz).to_rss_string() for _ in fd]
 
 
-def w3c(date: str, tz: str = "UTC") -> list[str]:
+def w3c(date: str, tz: str = "UTC") -> List[str]:
     d = date.replace(" ", " a ")
     fd = list(df.find_dates(d))
     return [p.parse(_.isoformat(), tz=tz).to_w3c_string() for _ in fd]
 
 
-def iso_8601(date: str, tz: str = "UTC") -> list[str]:
+def iso_8601(date: str, tz: str = "UTC") -> List[str]:
     d = date.replace(" ", " a ")
     fd = list(df.find_dates(d))
     return [p.parse(_.isoformat(), tz=tz).to_iso8601_string() for _ in fd]
 
 
-def atom_string(date: str, tz: str = "UTC") -> list[str]:
+def atom_string(date: str, tz: str = "UTC") -> List[str]:
     d = date.replace(" ", " a ")
     fd = list(df.find_dates(d))
     return [p.parse(_.isoformat(), tz=tz).to_atom_string() for _ in fd]
 
 
-def cookie_string(date: str, tz: str = "UTC") -> list[str]:
+def cookie_string(date: str, tz: str = "UTC") -> List[str]:
     d = date.replace(" ", " a ")
     fd = list(df.find_dates(d))
     return [p.parse(_.isoformat(), tz=tz).to_cookie_string() for _ in fd]
 
 
-def rfc_1036(date: str, tz: str = "UTC") -> list[str]:
+def rfc_1036(date: str, tz: str = "UTC") -> List[str]:
     d = date.replace(" ", " a ")
     fd = list(df.find_dates(d))
     return [p.parse(_.isoformat(), tz=tz).to_rfc1036_string() for _ in fd]
 
 
-def rfc_1123(date: str, tz: str = "UTC") -> list[str]:
+def rfc_1123(date: str, tz: str = "UTC") -> List[str]:
     d = date.replace(" ", " a ")
     fd = list(df.find_dates(d))
     return [p.parse(_.isoformat(), tz=tz).to_rfc1123_string() for _ in fd]
 
 
-def rfc_2822(date: str, tz: str = "UTC") -> list[str]:
+def rfc_2822(date: str, tz: str = "UTC") -> List[str]:
     d = date.replace(" ", " a ")
     fd = list(df.find_dates(d))
     return [
@@ -182,7 +182,7 @@ def rfc_2822(date: str, tz: str = "UTC") -> list[str]:
     ]
 
 
-def rfc_3339(date: str, tz: str = "UTC") -> list[str]:
+def rfc_3339(date: str, tz: str = "UTC") -> List[str]:
     d = date.replace(" ", " a ")
     fd = list(df.find_dates(d))
     return [
